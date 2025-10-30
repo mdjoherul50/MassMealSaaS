@@ -24,17 +24,18 @@ class MealController extends Controller
         // TenantScope স্বয়ংক্রিয়ভাবে কাজ করবে
         $members = Member::orderBy('name')->get();
 
+        // --- এটি হলো সংশোধিত অংশ ---
         // ওই তারিখে সদস্যদের পূর্ববর্তী মিল ডেটা (যদি থাকে) আনুন
         $mealsData = Meal::where('date', $selectedDate)
-                         ->pluck('data', 'member_id')
-                         ->mapWithKeys(function ($data, $memberId) {
-                             return [$memberId => [
-                                 'breakfast' => $data['breakfast'] ?? 0,
-                                 'lunch' => $data['lunch'] ?? 0,
-                                 'dinner' => $data['dinner'] ?? 0,
-                             ]];
-                         });
+                         ->select('member_id', 'breakfast', 'lunch', 'dinner') // 'data' এর পরিবর্তে আসল কলামগুলো select করুন
+                         ->get()
+                         ->keyBy('member_id'); // member_id দিয়ে collection-কে index করুন
+        // --- সংশোধন শেষ ---
 
+        // আমি দেখতে পাচ্ছি আপনি ভিউ ফাইলটি ভুল জায়গায় রেখেছেন
+        // Path: resources/views/tenant/members/meals/bulk.blade.php
+        // এটি হওয়া উচিত: resources/views/tenant/meals/bulk.blade.php
+        // অনুগ্রহ করে ফাইলটি সঠিক ফোল্ডারে (tenant/meals) সরিয়ে নিন।
         return view('tenant.meals.bulk', compact('members', 'mealsData', 'selectedDate'));
     }
 
