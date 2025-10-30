@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant; // Tenant মডেল ইম্পোর্ট করুন
 use Illuminate\Http\Request;
 
 class TenantController extends Controller
@@ -12,54 +13,35 @@ class TenantController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        // এখানে TenantScope কাজ করবে না, কারণ আমরা Super Admin
+        // সব টেন্যান্টকে লোড করুন
+        $tenants = Tenant::with('owner')->latest()->paginate(20);
+        
+        return view('superadmin.tenants.index', compact('tenants'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Tenant $tenant)
     {
-        //
+        // একটি নির্দিষ্ট টেন্যান্টের বিস্তারিত দেখান
+        $tenant->load('users', 'members'); // User ও Member লোড করুন
+        return view('superadmin.tenants.show', compact('tenant'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified resource in storage (e.g., suspend/activate).
      */
-    public function edit(string $id)
+    public function update(Request $request, Tenant $tenant)
     {
-        //
+        $validated = $request->validate([
+            'status' => 'required|in:active,suspended',
+        ]);
+
+        $tenant->update($validated);
+        return redirect()->route('superadmin.tenants.show', $tenant)->with('success', 'Tenant status updated.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // ... (create, store, edit, destroy মেথডগুলো আমরা আপাতত বাদ রাখছি)
 }

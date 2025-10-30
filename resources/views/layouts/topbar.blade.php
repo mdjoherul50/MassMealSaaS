@@ -73,6 +73,18 @@
             </x-nav-link>
         </div>
 
+        @if(Auth::user()->role == 'super_admin')
+            <div class="mt-6 pt-4 border-t border-gray-700">
+                <h6 class="px-4 text-xs text-gray-400 uppercase tracking-wider font-semibold">Super Admin</h6>
+                <div class="mt-2 space-y-1">
+                    <x-nav-link :href="route('superadmin.tenants.index')" :active="request()->routeIs('superadmin.tenants.*')"
+                                class="text-white hover:bg-gray-700">
+                        {{ __('Manage Tenants') }}
+                    </x-nav-link>
+                </div>
+            </div>
+        @endif
+
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
