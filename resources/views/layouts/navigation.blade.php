@@ -17,9 +17,6 @@
                     </x-nav-link>
                 </div>
             </div>
-<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
 
                     <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
                         {{ __('Members') }}
@@ -27,6 +24,9 @@
 
                     <x-nav-link :href="route('meals.bulkStoreView')" :active="request()->routeIs('meals.*')">
                         {{ __('Daily Meals') }}
+                    </x-nav-link>
+                    -nav-link :href="route('bazars.index')" :active="request()->routeIs('bazars.*')">
+                        {{ __('Bazar List') }}
                     </x-nav-link>
 
             <!-- Settings Dropdown -->
