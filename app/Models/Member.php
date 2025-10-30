@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,4 +41,8 @@ class Member extends Model
     {
         return $this->hasMany(Deposit::class);
     }
+    protected static function booted(): void
+{
+    static::addGlobalScope(new TenantScope);
+}
 }

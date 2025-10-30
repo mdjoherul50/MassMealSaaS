@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,4 +34,8 @@ class Meal extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+    protected static function booted(): void
+{
+    static::addGlobalScope(new TenantScope);
+}
 }
