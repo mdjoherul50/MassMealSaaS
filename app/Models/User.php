@@ -21,8 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'tenant_id', // নতুন যোগ করা হয়েছে
+        'role_id',   // 'role' এর পরিবর্তে
+        'tenant_id',
     ];
 
     /**
@@ -54,5 +54,30 @@ class User extends Authenticatable
     public function tenant()
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    /**
+     * Get the role that the user has.
+     * (নতুন মেথড)
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Check if the user has a specific permission.
+     * (নতুন মেথড)
+     */
+    public function hasPermission($permissionSlug): bool
+    {
+        // যদি ইউজার সুপার অ্যাডমিন হয়, সব পারমিশন দিন
+        // (আমরা সিডারে 'super-admin' slug সহ রোল তৈরি করবো)
+        if ($this->role && $this->role->slug == 'super-admin') {
+            return true;
+        }
+
+        // ইউজারের রোল আছে কিনা এবং রোলের পারমিশনের মধ্যে $permissionSlug আছে কিনা দেখুন
+        return $this->role && $this->role->permissions->contains('slug', $permissionSlug);
     }
 }
