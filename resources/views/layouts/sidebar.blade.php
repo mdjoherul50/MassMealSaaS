@@ -30,5 +30,9 @@
                     class="text-white hover:bg-gray-700">
             {{ __('Deposits') }}
         </x-nav-link>
+        <x-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')"
+                    class="text-white hover:bg-gray-700">
+            {{ __('Reports') }}
+        </x-nav-link>
     </nav>
 </div>

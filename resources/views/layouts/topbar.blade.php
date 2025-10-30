@@ -67,6 +67,10 @@
             <x-responsive-nav-link :href="route('deposits.index')" :active="request()->routeIs('deposits.*')">
                 {{ __('Deposits') }}
             </x-responsive-nav-link>
+            <x-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')"
+                    class="text-white hover:bg-gray-700">
+                 {{ __('Reports') }}
+            </x-nav-link>
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
