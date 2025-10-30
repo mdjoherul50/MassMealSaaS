@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Deposit; // Deposit মডেল ইম্পোর্ট করুন
+use App\Models\Member; // Member মডেল ইম্পোর্ট করুন
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepositController extends Controller
 {
@@ -12,7 +15,10 @@ class DepositController extends Controller
      */
     public function index()
     {
-        //
+        // TenantScope স্বয়ংক্রিয়ভাবে শুধু এই মেসের ডিপোজিট তালিকা আনবে
+        $deposits = Deposit::with('member')->latest('date')->paginate(20);
+        
+        return view('tenant.deposits.index', compact('deposits'));
     }
 
     /**
@@ -20,46 +26,32 @@ class DepositController extends Controller
      */
     public function create()
     {
-        //
+        // এই মেসের সব সদস্যকে আনুন
+        $members = Member::orderBy('name')->get();
+                      
+        return view('tenant.deposits.create', compact('members'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'date' => 'required|date',
+            'member_id' => 'required|exists:members,id',
+            'amount' => 'required|numeric|min:0',
+            'method' => 'nullable|string|max:50',
+            'reference' => 'nullable|string|max:100',
+        ]);
+
+        // tenant_id যোগ করুন
+        $validatedData['tenant_id'] = Auth::user()->tenant_id;
+
+        Deposit::create($validatedData);
+
+        return redirect()->route('deposits.index')->with('success', 'Deposit entry added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // ... (show, edit, update, destroy মেথডগুলো আমরা পরে যোগ করবো)
 }
