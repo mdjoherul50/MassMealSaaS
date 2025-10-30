@@ -38,6 +38,7 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
 
     // Meal Management
     Route::post('meals/bulk-store', [MealController::class, 'bulkStore'])->name('meals.bulkStore');
+    Route::get('meals/bulk', [MealController::class, 'bulkStoreView'])->name('meals.bulkStoreView');
     // Route::get('meals/daily-update', [MealController::class, 'dailyUpdateView'])->name('meals.dailyUpdateView');
     
     // Bazar Management
