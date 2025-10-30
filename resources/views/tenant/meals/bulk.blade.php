@@ -64,7 +64,7 @@
                                             No members found. Please <a href="{{ route('members.create') }}" class="text-indigo-600 underline">add members</a> first.
                                         </td>
                                     </tr>
-                                @endfelse
+                                @endforelse
                             </tbody>
                         </table>
 
