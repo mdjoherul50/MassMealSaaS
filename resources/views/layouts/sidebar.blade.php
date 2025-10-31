@@ -58,5 +58,13 @@
                     </div>
             </div>
         @endcan
+
+        @can('roles.manage')
+                    <x-nav-link :href="route('superadmin.roles.index')" :active="request()->routeIs('superadmin.roles.*')"
+                                class="text-white hover:bg-gray-700">
+                        {{ __('Manage Roles') }}
+                    </x-nav-link>
+        @endcan
+        
     </nav>
 </div>

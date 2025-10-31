@@ -10,6 +10,7 @@ use App\Http\Controllers\Tenant\BazarController;
 use App\Http\Controllers\Tenant\DepositController;
 use App\Http\Controllers\Tenant\ReportController;
 use App\Http\Controllers\SuperAdmin\TenantController;
+use App\Http\Controllers\SuperAdmin\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -62,7 +63,7 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
 Route::middleware(['auth', 'can:tenants.manage'])->prefix('superadmin')->name('superadmin.')->group(function () {
     
     Route::resource('tenants', TenantController::class);
-    
+    Route::resource('roles', RoleController::class)->middleware('can:roles.manage');
 });
 
 require __DIR__.'/auth.php';
