@@ -23,7 +23,7 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-                                <th scope="col" class="relative px-6 py-3"><span class="sr-only">Edit</span></th>
+                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -33,8 +33,19 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $member->phone }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $member->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $member->join_date ? \Carbon\Carbon::parse($member->join_date)->format('d M, Y') : '' }}</td>
+                                
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
+                                        <a href="{{ route('members.show', $member) }}" class="text-gray-600 hover:text-gray-900">View</a>
+                                        @can('members.edit')
+                                        <a href="{{ route('members.edit', $member) }}" class="text-indigo-600 hover:text-indigo-900 ml-2">Edit</a>
+                                        @endcan
+                                        @can('members.delete')
+                                        <form action="{{ route('members.destroy', $member) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Are you sure? This will delete the member AND their user account.');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                        </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty
