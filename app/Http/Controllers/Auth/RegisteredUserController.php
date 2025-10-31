@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use App\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -28,23 +29,29 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+   public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'mess_name' => ['required', 'string', 'max:255'], // নতুন ভ্যালিডেশন
+            'mess_name' => ['required', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // SRS অনুযায়ী ট্রানজেকশন ব্যবহার করা ভালো
+        // 'mess-admin' রোলটি খুঁজে বের করুন
+        $messAdminRole = \App\Models\Role::where('slug', 'mess-admin')->first();
+        if (! $messAdminRole) {
+            // যদি কোনো কারণে রোলটি না থাকে (সিডার চালানো হয়নি)
+            return back()->with('error', 'System role not found. Please contact admin.');
+        }
+
         $user = null;
         try {
-            DB::transaction(function () use ($request, &$user) {
+            DB::transaction(function () use ($request, $messAdminRole, &$user) {
                 // ১. নতুন মেস (Tenant) তৈরি করুন
                 $tenant = \App\Models\Tenant::create([
                     'name' => $request->mess_name,
-                    'plan' => 'free', // ডিফল্ট প্ল্যান
+                    'plan' => 'free',
                     'status' => 'active',
                 ]);
 
@@ -53,8 +60,8 @@ class RegisteredUserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'role' => 'mess_admin', // SRS অনুযায়ী রোল সেট করুন
-                    'tenant_id' => $tenant->id, // নতুন টেন্যান্টের ID দিন
+                    'role_id' => $messAdminRole->id, // নতুন role_id দিন
+                    'tenant_id' => $tenant->id,
                 ]);
 
                 // ৩. টেন্যান্টের owner_user_id আপডেট করুন
@@ -62,8 +69,7 @@ class RegisteredUserController extends Controller
                 $tenant->save();
             });
         } catch (\Exception $e) {
-            // কোনো কারণে ফেইল হলে
-            return back()->with('error', 'Registration failed. Please try again.');
+            return back()->with('error', 'Registration failed. Please try again. ' . $e->getMessage());
         }
 
         event(new Registered($user));
