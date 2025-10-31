@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bazar; // Bazar মডেল ইম্পোর্ট করুন
-use App\Models\User; // User মডেল ইম্পোর্ট করুন
+use App\Models\Bazar;
+use App\Models\User; // <-- User মডেল ইম্পোর্ট করা আছে
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,20 +15,25 @@ class BazarController extends Controller
      */
     public function index()
     {
-        // TenantScope স্বয়ংক্রিয়ভাবে শুধু এই মেসের বাজার তালিকা আনবে
         $bazars = Bazar::with('buyer')->latest('date')->paginate(20);
-        
         return view('tenant.bazars.index', compact('bazars'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource. (সংশোধিত)
      */
     public function create()
     {
-        // এই মেসের 'bazarman' বা 'mess_admin' রোলের ইউজারদের আনুন, যেন ড্রপডাউনে দেখানো যায়
+        // --- এটি হলো সমাধান ---
+        // আমরা এখন 'role'-এর বদলে 'role.slug' দিয়ে খুঁজব
+        
+        // সিডার থেকে রোলের স্ল্যাগগুলো নিন
+        $roleSlugs = ['bazarman', 'mess-admin'];
+
         $buyers = User::where('tenant_id', Auth::user()->tenant_id)
-                      ->whereIn('role', ['bazarman', 'mess_admin'])
+                      ->whereHas('role', function ($query) use ($roleSlugs) {
+                          $query->whereIn('slug', $roleSlugs);
+                      })
                       ->orderBy('name')
                       ->get();
                       
@@ -47,43 +52,11 @@ class BazarController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        // tenant_id যোগ করুন
         $validatedData['tenant_id'] = Auth::user()->tenant_id;
-
         Bazar::create($validatedData);
 
         return redirect()->route('bazars.index')->with('success', 'Bazar entry added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // ... (বাকি মেথডগুলো)
 }
