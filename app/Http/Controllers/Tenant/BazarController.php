@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bazar;
-use App\Models\User; // <-- User মডেল ইম্পোর্ট করা আছে
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +24,8 @@ class BazarController extends Controller
      */
     public function create()
     {
-        // --- এটি হলো সমাধান ---
-        // আমরা এখন 'role'-এর বদলে 'role.slug' দিয়ে খুঁজব
-        
-        // সিডার থেকে রোলের স্ল্যাগগুলো নিন
-        $roleSlugs = ['bazarman', 'mess-admin'];
+        // 'member' রোলটি এখানে যোগ করা হয়েছে
+        $roleSlugs = ['mess-admin', 'bazarman', 'member'];
 
         $buyers = User::where('tenant_id', Auth::user()->tenant_id)
                       ->whereHas('role', function ($query) use ($roleSlugs) {
@@ -58,5 +55,56 @@ class BazarController extends Controller
         return redirect()->route('bazars.index')->with('success', 'Bazar entry added successfully.');
     }
 
-    // ... (বাকি মেথডগুলো)   
+    /**
+     * Display the specified resource. (নতুন)
+     */
+    public function show(Bazar $bazar)
+    {
+        // TenantScope স্বয়ংক্রিয়ভাবে চেক করবে
+        return view('tenant.bazars.show', compact('bazar'));
+    }
+
+    /**
+     * Show the form for editing the specified resource. (নতুন)
+     */
+    public function edit(Bazar $bazar)
+    {
+        // 'member' রোলটি এখানে যোগ করা হয়েছে
+        $roleSlugs = ['mess-admin', 'bazarman', 'member'];
+        
+        $buyers = User::where('tenant_id', Auth::user()->tenant_id)
+                      ->whereHas('role', function ($query) use ($roleSlugs) {
+                          $query->whereIn('slug', $roleSlugs);
+                      })
+                      ->orderBy('name')
+                      ->get();
+                      
+        return view('tenant.bazars.edit', compact('bazar', 'buyers'));
+    }
+
+    /**
+     * Update the specified resource in storage. (নতুন)
+     */
+    public function update(Request $request, Bazar $bazar)
+    {
+        $validatedData = $request->validate([
+            'date' => 'required|date',
+            'buyer_id' => 'required|exists:users,id',
+            'total_amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+        ]);
+
+        $bazar->update($validatedData);
+
+        return redirect()->route('bazars.index')->with('success', 'Bazar entry updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage. (নতুন)
+     */
+    public function destroy(Bazar $bazar)
+    {
+        $bazar->delete();
+        return redirect()->route('bazars.index')->with('success', 'Bazar entry deleted successfully.');
+    }
 }

@@ -50,12 +50,11 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
         'can:meals.manage', // create, store, edit, update, destroy
     ]);
     
-    // Bazars (Mess Admin & Bazarman)
+    // Bazar Management (Mess Admin & Bazarman)
     Route::resource('bazars', BazarController::class)->middleware([
-        'can:bazars.view',
-        'can:bazars.manage',
+        'can:bazars.view', // index, show
+        'can:bazars.manage', // create, store, edit, update, destroy
     ]);
-
     // Deposits (Mess Admin)
     Route::resource('deposits', DepositController::class)->middleware([
         'can:deposits.view',

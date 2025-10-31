@@ -23,7 +23,7 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buyer</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                <th scope="col" class="relative px-6 py-3"><span class="sr-only">Edit</span></th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -32,9 +32,17 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($bazar->date)->format('d M, Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $bazar->buyer->name ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ number_format($bazar->total_amount, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $bazar->description }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($bazar->description, 30) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
+                                        <a href="{{ route('bazars.show', $bazar) }}" class="text-gray-600 hover:text-gray-900">View</a>
+                                        @can('bazars.manage')
+                                        <a href="{{ route('bazars.edit', $bazar) }}" class="text-indigo-600 hover:text-indigo-900 ml-2">Edit</a>
+                                        <form action="{{ route('bazars.destroy', $bazar) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Are you sure?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                        </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty
@@ -46,7 +54,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                    
                     <div class="mt-4">
                         {{ $bazars->links() }}
                     </div>
