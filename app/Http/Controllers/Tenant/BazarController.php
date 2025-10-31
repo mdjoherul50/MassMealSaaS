@@ -58,5 +58,5 @@ class BazarController extends Controller
         return redirect()->route('bazars.index')->with('success', 'Bazar entry added successfully.');
     }
 
-    // ... (বাকি মেথডগুলো)
+    // ... (বাকি মেথডগুলো)   
 }
