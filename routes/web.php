@@ -39,8 +39,16 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
     ]);
 
     // Meals (Mess Admin & Bazarman)
-    Route::get('meals/bulk', [MealController::class, 'bulkStoreView'])->name('meals.bulkStoreView')->middleware('can:meals.view');
+    
+    // বাল্ক এন্ট্রি পেজ (আগেরটির নতুন নাম)
+    Route::get('meals/bulk-entry', [MealController::class, 'bulkStoreView'])->name('meals.bulkEntry')->middleware('can:meals.view');
     Route::post('meals/bulk-store', [MealController::class, 'bulkStore'])->name('meals.bulkStore')->middleware('can:meals.manage');
+    
+    // মিলের CRUD (নতুন ডাটা টেবিলের জন্য)
+    Route::resource('meals', MealController::class)->middleware([
+        'can:meals.view', // index, show
+        'can:meals.manage', // create, store, edit, update, destroy
+    ]);
     
     // Bazars (Mess Admin & Bazarman)
     Route::resource('bazars', BazarController::class)->middleware([

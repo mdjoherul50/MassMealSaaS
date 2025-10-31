@@ -61,11 +61,17 @@
             </x-responsive-nav-link>
             @endcan
             
-            @can('meals.view')
-            <x-responsive-nav-link :href="route('meals.bulkStoreView')" :active="request()->routeIs('meals.*')">
-                {{ __('Daily Meals') }}
-            </x-responsive-nav-link>
-            @endcan
+           @can('meals.view')
+        <x-nav-link :href="route('meals.bulkEntry')" :active="request()->routeIs('meals.bulkEntry')"
+                    class="text-white hover:bg-gray-700">
+            {{ __('Daily Meal Entry') }}
+        </x-nav-link>
+        
+        <x-nav-link :href="route('meals.index')" :active="request()->routeIs('meals.index') || request()->routeIs('meals.create') || request()->routeIs('meals.edit') || request()->routeIs('meals.show')"
+                    class="text-white hover:bg-gray-700">
+            {{ __('All Meal List') }}
+        </x-nav-link>
+        @endcan
             
             @can('bazars.view')
             <x-responsive-nav-link :href="route('bazars.index')" :active="request()->routeIs('bazars.*')">

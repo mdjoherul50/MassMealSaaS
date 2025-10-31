@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form method="GET" action="{{ route('meals.bulkStoreView') }}" class="mb-4 flex items-center">
+                    <form method="GET" action="{{ route('meals.bulkEntry') }}" class="mb-4 flex items-center">
                         <x-input-label for="date" :value="__('Select Date')" class="mr-2" />
                         <x-text-input id="date" type="date" name="date" :value="$selectedDate" required />
                         <x-primary-button class="ms-2">

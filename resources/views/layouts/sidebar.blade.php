@@ -19,9 +19,14 @@
         @endcan
 
         @can('meals.view')
-        <x-nav-link :href="route('meals.bulkStoreView')" :active="request()->routeIs('meals.*')"
+        <x-nav-link :href="route('meals.bulkEntry')" :active="request()->routeIs('meals.bulkEntry')"
                     class="text-white hover:bg-gray-700">
-            {{ __('Daily Meals') }}
+            {{ __('Daily Meal Entry') }}
+        </x-nav-link>
+        
+        <x-nav-link :href="route('meals.index')" :active="request()->routeIs('meals.index') || request()->routeIs('meals.create') || request()->routeIs('meals.edit') || request()->routeIs('meals.show')"
+                    class="text-white hover:bg-gray-700">
+            {{ __('All Meal List') }}
         </x-nav-link>
         @endcan
 
@@ -65,6 +70,6 @@
                         {{ __('Manage Roles') }}
                     </x-nav-link>
         @endcan
-        
+
     </nav>
 </div>
