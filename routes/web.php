@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController; // Breeze-এর জন্য এটি যোগ করুন
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// আমাদের কন্ট্রোলারগুলো
+// কন্ট্রোলারগুলো
 use App\Http\Controllers\Tenant\MemberController;
 use App\Http\Controllers\Tenant\MealController;
 use App\Http\Controllers\Tenant\BazarController;
@@ -15,12 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Breeze-এর ডিফল্ট ড্যাশবোর্ড রাউট
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Breeze-এর প্রোফাইল রাউট
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -28,38 +26,43 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// --- আমাদের কাস্টম টেন্যান্ট (Mess Admin) রাউট গ্রুপ ---
-// (SRS সেকশন ১৫ অনুযায়ী)
+// --- টেন্যান্ট (Mess Admin / Bazarman) রাউট গ্রুপ ---
 Route::middleware(['auth', 'check.tenant'])->group(function () {
     
-    // Member Management
-    Route::resource('members', MemberController::class);
-    // Route::post('members/import', [MemberController::class, 'importCsv'])->name('members.import');
+    // Members (Mess Admin)
+    Route::resource('members', MemberController::class)->middleware([
+        'can:members.view', // index, show
+        'can:members.create', // create, store
+        'can:members.edit', // edit, update
+        'can:members.delete', // destroy
+    ]);
 
-    // Meal Management
-    Route::post('meals/bulk-store', [MealController::class, 'bulkStore'])->name('meals.bulkStore');
-    Route::get('meals/bulk', [MealController::class, 'bulkStoreView'])->name('meals.bulkStoreView');
-    // Route::get('meals/daily-update', [MealController::class, 'dailyUpdateView'])->name('meals.dailyUpdateView');
+    // Meals (Mess Admin & Bazarman)
+    Route::get('meals/bulk', [MealController::class, 'bulkStoreView'])->name('meals.bulkStoreView')->middleware('can:meals.view');
+    Route::post('meals/bulk-store', [MealController::class, 'bulkStore'])->name('meals.bulkStore')->middleware('can:meals.manage');
     
-    // Bazar Management
-    Route::resource('bazars', BazarController::class);
+    // Bazars (Mess Admin & Bazarman)
+    Route::resource('bazars', BazarController::class)->middleware([
+        'can:bazars.view',
+        'can:bazars.manage',
+    ]);
 
-    // Deposit Management
-    Route::resource('deposits', DepositController::class);
+    // Deposits (Mess Admin)
+    Route::resource('deposits', DepositController::class)->middleware([
+        'can:deposits.view',
+        'can:deposits.manage',
+    ]);
 
-    // Report Management
-    Route::get('reports/overview/{month?}', [ReportController::class, 'overview'])->name('reports.overview');
+    // Reports (Mess Admin & Member)
+    Route::get('reports/overview/{month?}', [ReportController::class, 'overview'])->name('reports.overview')->middleware('can:reports.view');
     
 });
 
-// --- আমাদের কাস্টম সুপার অ্যাডমিন (Super Admin) রাউট গ্রুপ ---
-// (SRS সেকশন ১৫ অনুযায়ী)
-Route::middleware(['auth', 'check.tenant'])->prefix('superadmin')->name('superadmin.')->group(function () {
+// --- সুপার অ্যাডমিন (Super Admin) রাউট গ্রুপ ---
+Route::middleware(['auth', 'can:tenants.manage'])->prefix('superadmin')->name('superadmin.')->group(function () {
     
     Route::resource('tenants', TenantController::class);
     
 });
 
-
-// এই লাইনটি লগইন/রেজিস্ট্রেশন রাউটগুলো লোড করার জন্য আবশ্যক
 require __DIR__.'/auth.php';

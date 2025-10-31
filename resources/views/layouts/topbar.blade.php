@@ -43,7 +43,7 @@
                 </x-dropdown>
             </div>
             
-            <div class="sm:hidden flex items-center ms-auto">
+             <div class="sm:hidden flex items-center ms-auto">
                  <div class="font-medium text-sm text-gray-500">{{ Auth::user()->name }}</div>
              </div>
         </div>
@@ -55,35 +55,49 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             
+            @can('members.view')
             <x-responsive-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
                 {{ __('Members') }}
             </x-responsive-nav-link>
+            @endcan
+            
+            @can('meals.view')
             <x-responsive-nav-link :href="route('meals.bulkStoreView')" :active="request()->routeIs('meals.*')">
                 {{ __('Daily Meals') }}
             </x-responsive-nav-link>
+            @endcan
+            
+            @can('bazars.view')
             <x-responsive-nav-link :href="route('bazars.index')" :active="request()->routeIs('bazars.*')">
                 {{ __('Bazar List') }}
             </x-responsive-nav-link>
+            @endcan
+            
+            @can('deposits.view')
             <x-responsive-nav-link :href="route('deposits.index')" :active="request()->routeIs('deposits.*')">
                 {{ __('Deposits') }}
             </x-responsive-nav-link>
-            <x-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')"
-                    class="text-white hover:bg-gray-700">
-                 {{ __('Reports') }}
-            </x-nav-link>
-        </div>
+            @endcan
+            
+            @can('reports.view')
+            <x-responsive-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')">
+                {{ __('Reports') }}
+            </x-responsive-nav-link>
+            @endcan
 
-        @if(Auth::user()->role == 'super_admin')
-            <div class="mt-6 pt-4 border-t border-gray-700">
-                <h6 class="px-4 text-xs text-gray-400 uppercase tracking-wider font-semibold">Super Admin</h6>
-                <div class="mt-2 space-y-1">
-                    <x-nav-link :href="route('superadmin.tenants.index')" :active="request()->routeIs('superadmin.tenants.*')"
-                                class="text-white hover:bg-gray-700">
+            @can('tenants.manage')
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">Super Admin</div>
+                </div>
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('superadmin.tenants.index')" :active="request()->routeIs('superadmin.tenants.*')">
                         {{ __('Manage Tenants') }}
-                    </x-nav-link>
+                    </x-responsive-nav-link>
                 </div>
             </div>
-        @endif
+            @endcan
+        </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">

@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\Permission;
+use App\Models\User;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // মাইগ্রেশনের আগে যেন एरর না দেয় সেজন্য try...catch ব্লক ব্যবহার করা
+        try {
+            // permissions টেবিলের সব পারমিশন লুপ করে গেট ডিফাইন করুন
+            if (Schema::hasTable('permissions')) {
+                Permission::all()->each(function ($permission) {
+                    Gate::define($permission->slug, function (User $user) use ($permission) {
+                        // User মডেলে আমাদের তৈরি করা hasPermission মেথডটি কল করুন
+                        return $user->hasPermission($permission->slug);
+                    });
+                });
+            }
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 }
