@@ -5,4 +5,4 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 Alpine.start();
-console.log('Vite is running!');
+import './custom.js';

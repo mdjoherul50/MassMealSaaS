@@ -1,0 +1,16 @@
+/* --- ল্যান্ডিং পেজের জন্য --- */
+.hero-bg {
+    background-color: #f9fafb;
+    /* হালকা গ্রাডিয়েন্ট */
+    background-image: linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+}
+
+.feature-icon {
+    background-image: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+/* --- লগইন/রেজিস্ট্রেশন পেজের জন্য (নতুন) --- */
+.auth-sidebar-bg {
+    /* সুন্দর একটি গ্রাডিয়েন্ট */
+    background-image: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+}

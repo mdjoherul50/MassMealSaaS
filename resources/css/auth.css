@@ -1,0 +1,5 @@
+.auth-sidebar-bg {
+    background-color: #f8fafc; /* A light fallback color */
+    overflow: hidden;
+    position: relative;
+}
