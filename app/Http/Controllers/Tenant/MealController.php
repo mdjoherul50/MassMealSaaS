@@ -34,9 +34,7 @@ class MealController extends Controller
     }
 
 
-    /**
-     * Store bulk meal data for a specific date. (সংশোধিত)
-     */
+
     public function bulkStore(Request $request)
     {
         $request->validate([
@@ -52,7 +50,7 @@ class MealController extends Controller
 
         DB::transaction(function () use ($request, $tenantId, $date) {
             foreach ($request->input('meals', []) as $memberId => $counts) {
-                
+
                 // --- এটিই হলো সমাধান ---
                 // 'date' কলামটিকে প্রথম অ্যারেতে (খোঁজার অ্যারে) যোগ করা হয়েছে
                 Meal::updateOrCreate(
@@ -79,7 +77,7 @@ class MealController extends Controller
         $meals = Meal::with('member') // সদস্যের নাম লোড করার জন্য
                      ->latest('date') // তারিখ অনুযায়ী সাজানো
                      ->paginate(20);
-        
+
         return view('tenant.meals.index', compact('meals'));
     }
 
@@ -107,7 +105,7 @@ class MealController extends Controller
         ]);
 
         $tenantId = Auth::user()->tenant_id;
-        
+
         // updateOrCreate ব্যবহার করুন যেন ডুপ্লিকেট এন্ট্রি না হয়
         Meal::updateOrCreate(
             [
@@ -157,13 +155,13 @@ class MealController extends Controller
             'lunch' => 'required|integer|min:0|max:10',
             'dinner' => 'required|integer|min:0|max:10',
         ]);
-        
+
         // তারিখ পরিবর্তন করা হলে ডুপ্লিকেট এন্ট্রি চেক করুন
         $existing = Meal::where('member_id', $validatedData['member_id'])
                         ->where('date', $validatedData['date'])
                         ->where('id', '!=', $meal->id)
                         ->first();
-        
+
         if ($existing) {
             return back()->withInput()->with('error', 'A meal entry for this member on this date already exists.');
         }
