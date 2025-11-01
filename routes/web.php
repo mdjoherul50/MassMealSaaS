@@ -31,12 +31,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'check.tenant'])->group(function () {
 
     // Members (Mess Admin)
-    Route::resource('members', MemberController::class)->middleware([
-        'can:members.view', // index, show
-        'can:members.create', // create, store
-        'can:members.edit', // edit, update
-        'can:members.delete', // destroy
-    ]);
+    Route::resource('members', MemberController::class);
 // My Statement (সদস্যদের জন্য নতুন রাউট)
     Route::get('/my-statement', [MemberController::class, 'myStatement'])
          ->name('members.myStatement')
