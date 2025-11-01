@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Member;
+use App\Policies\MemberPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Member::class, MemberPolicy::class);
         // মাইগ্রেশনের আগে যেন एरর না দেয় সেজন্য try...catch ব্লক ব্যবহার করা
         try {
             // permissions টেবিলের সব পারমিশন লুপ করে গেট ডিফাইন করুন

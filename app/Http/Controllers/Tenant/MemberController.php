@@ -94,7 +94,7 @@ class MemberController extends Controller
         $endDate = $startDate->copy()->endOfMonth();
 
         // --- ঐ মাসের হিসাব ---
-        
+
         // ১. মোট বাজার (Total Bazar)
         $totalBazar = \App\Models\Bazar::whereBetween('date', [$startDate, $endDate])->sum('total_amount');
         // ২. মোট মিল (Total Meal)
@@ -103,17 +103,17 @@ class MemberController extends Controller
         $avgMealRate = ($totalMeal > 0) ? ($totalBazar / $totalMeal) : 0;
 
         // --- এই সদস্যের হিসাব ---
-        
+
         // সদস্যের মোট মিল (এই মাসে)
         $memberTotalMeal = Meal::where('member_id', $member->id)
                                ->whereBetween('date', [$startDate, $endDate])
                                ->sum(DB::raw('breakfast + lunch + dinner'));
-        
+
         // সদস্যের মোট ডিপোজিট (এই মাসে)
         $memberTotalDeposit = Deposit::where('member_id', $member->id)
                                      ->whereBetween('date', [$startDate, $endDate])
                                      ->sum('amount');
-        
+
         // সদস্যের মোট চার্জ (এই মাসে)
         $memberTotalCharge = $memberTotalMeal * $avgMealRate;
         // ব্যালেন্স (এই মাসে)
@@ -124,7 +124,7 @@ class MemberController extends Controller
                              ->whereBetween('date', [$startDate, $endDate])
                              ->orderBy('date', 'asc')
                              ->get();
-                             
+
         // তারিখ অনুযায়ী ডিপোজিটের তালিকা
         $dateWiseDeposits = Deposit::where('member_id', $member->id)
                                   ->whereBetween('date', [$startDate, $endDate])
@@ -132,12 +132,12 @@ class MemberController extends Controller
                                   ->get();
 
         return view('tenant.members.show', compact(
-            'member', 
-            'selectedMonth', 
-            'avgMealRate', 
-            'memberTotalMeal', 
-            'memberTotalDeposit', 
-            'memberTotalCharge', 
+            'member',
+            'selectedMonth',
+            'avgMealRate',
+            'memberTotalMeal',
+            'memberTotalDeposit',
+            'memberTotalCharge',
             'balance',
             'dateWiseMeals',
             'dateWiseDeposits'
@@ -163,7 +163,7 @@ class MemberController extends Controller
             'email' => 'nullable|email|max:255|unique:users,email,' . $member->user_id, // User টেবিল চেক করুন
             'join_date' => 'nullable|date',
         ]);
-        
+
         try {
             DB::transaction(function () use ($validatedData, $member) {
                 // Member প্রোফাইল আপডেট করুন
@@ -206,5 +206,21 @@ class MemberController extends Controller
         }
 
         return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
+    }
+
+    public function myStatement(Request $request)
+    {
+        // লগইন করা ইউজারের ইমেইল দিয়ে Member প্রোফাইলটি খুঁজুন
+        $member = Member::where('email', $request->user()->email)
+                        ->where('tenant_id', $request->user()->tenant_id)
+                        ->first();
+
+        if (! $member) {
+            return redirect()->route('dashboard')->with('error', 'Your member profile could not be found.');
+        }
+
+        // মেম্বারকে তার নিজের 'show' পেজে রিডাইরেক্ট করুন
+        // MemberPolicy স্বয়ংক্রিয়ভাবে এটি Allow করবে
+        return redirect()->route('members.show', $member);
     }
 }

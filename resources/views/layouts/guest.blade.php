@@ -10,13 +10,12 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Link our custom auth CSS -->
-        @vite(['resources/css/app.css', 'resources/css/auth.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
 
-        <div class="min-h-screen flex bg-gray-50 lg:bg-white">
-            <div class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div class="min-h-screen flex">
+            <div class="flex-1 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24">
                 <div class="mx-auto w-full max-w-sm lg:w-96">
                     <div class="mb-8">
                         <a href="/">
@@ -24,59 +23,33 @@
                         </a>
                     </div>
 
-                    @if (isset($title))
-                        <div class="mb-6">
-                            <h2 class="text-2xl font-bold text-gray-900">
-                                {{ $title }}
-                            </h2>
-                            @if (isset($subtitle))
-                                <p class="mt-2 text-sm text-gray-600">
-                                    {{ $subtitle }}
-                                </p>
-                            @endif
-                        </div>
-                    @endif
-
                     {{ $slot }}
                 </div>
             </div>
 
-            <div class="hidden lg:flex flex-1 auth-sidebar-bg">
-                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop"
-                     alt="A person preparing a meal"
-                     class="w-full h-full object-cover">
+            {{-- নতুন ইমেজ ব্যাকগ্রাউন্ড সেকশন --}}
+            <div class="hidden lg:flex flex-1 relative bg-cover bg-center"
+                 style="background-image: url('{{ asset('images/auth-bg.jpg') }}');">
+                {{-- Overlay for better text readability --}}
+                <div class="absolute inset-0 bg-gray-900 opacity-70"></div>
+
+                <div class="relative z-10 p-12 text-white flex flex-col justify-between">
+                    <div class="text-right">
+                        <a href="/" class="text-sm font-medium text-gray-300 hover:text-white">&larr; Back to Home</a>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold">
+                            Welcome to MassMeal
+                        </h2>
+                        <p class="mt-4 text-lg text-gray-300">
+                            The all-in-one solution for managing your mess. Track meals, calculate costs, and manage deposits with ease.
+                        </p>
+                    </div>
+                    <div class="text-sm text-gray-400">
+                        &copy; {{ date('Y') }} {{ config('app.name') }}.
+                    </div>
+                </div>
             </div>
         </div>
-
-        <script>
-            function setupPasswordToggle(inputId) {
-                const passwordInput = document.getElementById(inputId);
-                const toggleButton = document.getElementById(inputId + '-toggle');
-                const eyeIcon = toggleButton.querySelector('.eye-icon');
-                const eyeOffIcon = toggleButton.querySelector('.eye-off-icon');
-
-                toggleButton.addEventListener('click', function () {
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        eyeIcon.style.display = 'none';
-                        eyeOffIcon.style.display = 'block';
-                    } else {
-                        passwordInput.type = 'password';
-                        eyeIcon.style.display = 'block';
-                        eyeOffIcon.style.display = 'none';
-                    }
-                });
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                if (document.getElementById('password')) {
-                    setupPasswordToggle('password');
-                }
-                if (document.getElementById('password_confirmation')) {
-                    setupPasswordToggle('password_confirmation');
-                }
-            });
-        </script>
-
     </body>
 </html>

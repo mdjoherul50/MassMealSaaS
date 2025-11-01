@@ -10,7 +10,12 @@
             <i class="fa-solid fa-home w-6 text-center"></i>
             <span>{{ __('Dashboard') }}</span>
         </x-nav-link>
-
+       @if(Auth::user()->role?->slug == 'member')
+            <x-nav-link :href="route('members.myStatement')" :active="request()->routeIs('members.show')">
+                <i class="fa-solid fa-id-card w-6 text-center"></i>
+                <span>{{ __('My Statement') }}</span>
+            </x-nav-link>
+        @endif
         @can('members.view')
         <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
             <i class="fa-solid fa-users w-6 text-center"></i>
