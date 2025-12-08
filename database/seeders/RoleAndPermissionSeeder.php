@@ -42,6 +42,8 @@ class RoleAndPermissionSeeder extends Seeder
         // Deposit Permissions
         Permission::create(['name' => 'View Deposits', 'slug' => 'deposits.view']);
         Permission::create(['name' => 'Manage Deposits', 'slug' => 'deposits.manage']);
+        Permission::create(['name' => 'View House Rent', 'slug' => 'houserent.view']);
+        Permission::create(['name' => 'Manage House Rent', 'slug' => 'houserent.manage']);
 
         // Report Permissions
         Permission::create(['name' => 'View Reports', 'slug' => 'reports.view']);
@@ -64,7 +66,9 @@ class RoleAndPermissionSeeder extends Seeder
                 'meals.view', 'meals.manage',
                 'bazars.view', 'bazars.manage',
                 'deposits.view', 'deposits.manage',
-                'reports.view'
+                'reports.view',
+                'houserent.view',
+                'houserent.manage',
             ])->pluck('id')
         );
 
@@ -80,7 +84,10 @@ class RoleAndPermissionSeeder extends Seeder
         // Member Role (Optional - যদি সদস্যরা লগইন করে)
         $memberRole = Role::create(['name' => 'Member', 'slug' => 'member']);
         $memberRole->permissions()->sync(
-             Permission::whereIn('slug', ['reports.view'])->pluck('id') // শুধু রিপোর্ট দেখতে পারবে
+             Permission::whereIn('slug', [
+                 'reports.view',
+                 'houserent.view',
+             ])->pluck('id')
         );
 
         // --- ডিফল্ট Super Admin ইউজার তৈরি করুন ---

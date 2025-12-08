@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Tenant\HouseRentController;
 // কন্ট্রোলারগুলো
-use App\Http\Controllers\Tenant\MemberController;
-use App\Http\Controllers\Tenant\MealController;
 use App\Http\Controllers\Tenant\BazarController;
 use App\Http\Controllers\Tenant\DepositController;
+use App\Http\Controllers\Tenant\HouseRentMainController;
+use App\Http\Controllers\Tenant\MealController;
+use App\Http\Controllers\Tenant\MemberController;
 use App\Http\Controllers\Tenant\ReportController;
-use App\Http\Controllers\SuperAdmin\TenantController;
 use App\Http\Controllers\SuperAdmin\RoleController;
+use App\Http\Controllers\SuperAdmin\TenantController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,10 +33,10 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
 
     // Members (Mess Admin)
     Route::resource('members', MemberController::class);
-// My Statement (সদস্যদের জন্য নতুন রাউট)
+    // My Statement (সদস্যদের জন্য নতুন রাউট)
     Route::get('/my-statement', [MemberController::class, 'myStatement'])
-         ->name('members.myStatement')
-         ->middleware('can:reports.view'); // '
+        ->name('members.myStatement')
+        ->middleware('can:reports.view'); // '
     // Meals (Mess Admin & Bazarman)
 
     // বাল্ক এন্ট্রি পেজ (আগেরটির নতুন নাম)
@@ -62,6 +63,27 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
     // Reports (Mess Admin & Member)
     Route::get('reports/overview/{month?}', [ReportController::class, 'overview'])->name('reports.overview')->middleware('can:reports.view');
 
+    Route::resource('house-rents', HouseRentController::class)->middleware([
+        'can:houserent.view',
+        'can:houserent.manage',
+    ]);
+
+    Route::get('/my-house-rent', [HouseRentController::class, 'myHouseRent'])
+        ->name('house-rents.my')
+        ->middleware('can:houserent.view');
+
+    // House Rent Main (total rent + utilities)
+    Route::resource('house-rent-mains', HouseRentMainController::class)->middleware([
+        'can:houserent.manage',
+    ]);
+
+    Route::post('/house-rent-mains/{month}/sync', [HouseRentMainController::class, 'syncAssigned'])
+        ->name('house-rent-mains.sync')
+        ->middleware('can:houserent.manage');
+
+    Route::post('/house-rent-mains/{month}/carry-forward', [HouseRentMainController::class, 'carryForward'])
+        ->name('house-rent-mains.carry-forward')
+        ->middleware('can:houserent.manage');
 });
 
 // --- সুপার অ্যাডমিন (Super Admin) রাউট গ্রুপ ---
@@ -71,4 +93,4 @@ Route::middleware(['auth', 'can:tenants.manage'])->prefix('superadmin')->name('s
     Route::resource('roles', RoleController::class)->middleware('can:roles.manage');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -54,12 +54,20 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
        @if(Auth::user()->role?->slug == 'member')
             <x-nav-link :href="route('members.myStatement')" :active="request()->routeIs('members.show')">
                 <i class="fa-solid fa-id-card w-6 text-center"></i>
                 <span>{{ __('My Statement') }}</span>
             </x-nav-link>
+            @can('houserent.view')
+            <x-responsive-nav-link :href="route('house-rents.my')" :active="request()->routeIs('house-rents.my')">
+                {{ __('My House Rent') }}
+            </x-responsive-nav-link>
+            @endcan
         @endif
+
+        @if(Auth::user()->role && Auth::user()->role->slug != 'super-admin')
             @can('members.view')
             <x-responsive-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
                 {{ __('Members') }}
@@ -87,11 +95,24 @@
             </x-responsive-nav-link>
             @endcan
 
+            @can('houserent.view')
+            <x-responsive-nav-link :href="route('house-rents.index')" :active="request()->routeIs('house-rents.*')">
+                {{ __('House Rent') }}
+            </x-responsive-nav-link>
+            @endcan
+
+            @can('houserent.manage')
+            <x-responsive-nav-link :href="route('house-rent-mains.index')" :active="request()->routeIs('house-rent-mains.*')">
+                {{ __('Rent Management') }}
+            </x-responsive-nav-link>
+            @endcan
+
             @can('reports.view')
             <x-responsive-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')">
                 {{ __('Reports') }}
             </x-responsive-nav-link>
             @endcan
+        @endif
 
             @if(Auth::user()->role && Auth::user()->role->slug == 'super-admin')
             <div class="mt-4 pt-4 border-t border-gray-200">

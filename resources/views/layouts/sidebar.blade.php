@@ -15,7 +15,15 @@
                 <i class="fa-solid fa-id-card w-6 text-center"></i>
                 <span>{{ __('My Statement') }}</span>
             </x-nav-link>
+            @can('houserent.view')
+            <x-nav-link :href="route('house-rents.my')" :active="request()->routeIs('house-rents.my')">
+                <i class="fa-solid fa-house w-6 text-center"></i>
+                <span>{{ __('My House Rent') }}</span>
+            </x-nav-link>
+            @endcan
         @endif
+
+        @if(Auth::user()->role && Auth::user()->role->slug != 'super-admin')
         @can('members.view')
         <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
             <i class="fa-solid fa-users w-6 text-center"></i>
@@ -49,12 +57,27 @@
         </x-nav-link>
         @endcan
 
+        @can('houserent.view')
+        <x-nav-link :href="route('house-rents.index')" :active="request()->routeIs('house-rents.*')">
+            <i class="fa-solid fa-house w-6 text-center"></i>
+            <span>{{ __('House Rent') }}</span>
+        </x-nav-link>
+        @endcan
+
+        @can('houserent.manage')
+        <x-nav-link :href="route('house-rent-mains.index')" :active="request()->routeIs('house-rent-mains.*')">
+            <i class="fa-solid fa-house-medical w-6 text-center"></i>
+            <span>{{ __('Rent Management') }}</span>
+        </x-nav-link>
+        @endcan
+
         @can('reports.view')
         <x-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')">
              <i class="fa-solid fa-chart-pie w-6 text-center"></i>
             <span>{{ __('Reports') }}</span>
         </x-nav-link>
         @endcan
+        @endif
 
         @if(Auth::user()->role && Auth::user()->role->slug == 'super-admin')
             <div class="mt-6 pt-4 border-t border-gray-700">
