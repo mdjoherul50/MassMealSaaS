@@ -5,11 +5,23 @@
         </a>
     </div>
 
+    <!-- Language Switcher -->
+    <div class="px-3 mb-4">
+        <x-language-switcher />
+    </div>
+
     <nav class="space-y-1">
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             <i class="fa-solid fa-home w-6 text-center"></i>
             <span>{{ __('Dashboard') }}</span>
         </x-nav-link>
+
+        {{-- Chat Menu --}}
+        <x-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.*')">
+            <i class="fa-solid fa-comments w-6 text-center"></i>
+            <span>{{ __('chat.chat') }}</span>
+        </x-nav-link>
+
        @if(Auth::user()->role?->slug == 'member')
             <x-nav-link :href="route('members.myStatement')" :active="request()->routeIs('members.show')">
                 <i class="fa-solid fa-id-card w-6 text-center"></i>
@@ -86,9 +98,14 @@
                     @can('tenants.manage')
                     <x-nav-link :href="route('superadmin.tenants.index')" :active="request()->routeIs('superadmin.tenants.*')">
                         <i class="fa-solid fa-building-user w-6 text-center"></i>
-                        <span>{{ __('Manage Tenants') }}</span>
+                        <span>{{ __('tenant.tenants') }}</span>
                     </x-nav-link>
                     @endcan
+
+                    <x-nav-link :href="route('superadmin.plans.index')" :active="request()->routeIs('superadmin.plans.*')">
+                        <i class="fa-solid fa-crown w-6 text-center"></i>
+                        <span>{{ __('plan.plans') }}</span>
+                    </x-nav-link>
 
                     @can('roles.manage')
                     <x-nav-link :href="route('superadmin.roles.index')" :active="request()->routeIs('superadmin.roles.*')">

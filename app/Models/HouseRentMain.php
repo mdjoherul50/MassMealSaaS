@@ -24,6 +24,10 @@ class HouseRentMain extends Model
         'remaining_balance',
         'carry_forward',
         'status',
+        'payment_method',
+        'payment_date',
+        'receipt_number',
+        'notes',
         'created_by',
     ];
 
@@ -37,6 +41,7 @@ class HouseRentMain extends Model
         'assigned_to_members' => 'decimal:2',
         'remaining_balance' => 'decimal:2',
         'carry_forward' => 'decimal:2',
+        'payment_date' => 'date',
     ];
 
     protected static function booted(): void

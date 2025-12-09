@@ -13,7 +13,18 @@ class Tenant extends Model
         'name',
         'owner_user_id',
         'plan',
+        'plan_id',
+        'plan_started_at',
+        'plan_expires_at',
+        'phone',
+        'address',
         'status',
+        'subscription_status',
+    ];
+
+    protected $casts = [
+        'plan_started_at' => 'date',
+        'plan_expires_at' => 'date',
     ];
 
     /**
@@ -38,5 +49,49 @@ class Tenant extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_user_id');
+    }
+
+    /**
+     * Get the plan that the tenant is subscribed to.
+     */
+    public function planDetails()
+    {
+        return $this->belongsTo(Plan::class, 'plan_id');
+    }
+
+    /**
+     * Check if tenant subscription is active.
+     */
+    public function isSubscriptionActive(): bool
+    {
+        if ($this->subscription_status === 'active') {
+            return true;
+        }
+
+        if ($this->subscription_status === 'trial' && $this->plan_expires_at && $this->plan_expires_at->gt(now())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if tenant is on trial.
+     */
+    public function isOnTrial(): bool
+    {
+        return $this->subscription_status === 'trial' && $this->plan_expires_at && $this->plan_expires_at->gt(now());
+    }
+
+    /**
+     * Get remaining trial days.
+     */
+    public function remainingTrialDays(): int
+    {
+        if (!$this->isOnTrial()) {
+            return 0;
+        }
+
+        return now()->diffInDays($this->plan_expires_at, false);
     }
 }

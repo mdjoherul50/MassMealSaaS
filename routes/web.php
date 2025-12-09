@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tenant\HouseRentController;
-// কন্ট্রোলারগুলো
 use App\Http\Controllers\Tenant\BazarController;
 use App\Http\Controllers\Tenant\DepositController;
 use App\Http\Controllers\Tenant\HouseRentMainController;
@@ -12,10 +11,15 @@ use App\Http\Controllers\Tenant\MemberController;
 use App\Http\Controllers\Tenant\ReportController;
 use App\Http\Controllers\SuperAdmin\RoleController;
 use App\Http\Controllers\SuperAdmin\TenantController;
+use App\Http\Controllers\SuperAdmin\PlanController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -90,7 +94,25 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
 Route::middleware(['auth', 'can:tenants.manage'])->prefix('superadmin')->name('superadmin.')->group(function () {
 
     Route::resource('tenants', TenantController::class);
+    Route::post('tenants/{tenant}/change-plan', [TenantController::class, 'changePlan'])->name('tenants.change-plan');
+
+    Route::resource('plans', PlanController::class);
+
     Route::resource('roles', RoleController::class)->middleware('can:roles.manage');
+});
+
+// --- Chat Routes ---
+Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
+    Route::get('/', [ChatController::class, 'index'])->name('index');
+    Route::get('/create-group', [ChatController::class, 'createGroupChat'])->name('create-group');
+    Route::post('/conversations', [ChatController::class, 'store'])->name('store');
+    Route::get('/conversations/{conversation}', [ChatController::class, 'show'])->name('show');
+    Route::post('/conversations/{conversation}/messages', [ChatController::class, 'sendMessage'])->name('send-message');
+    Route::get('/conversations/{conversation}/messages', [ChatController::class, 'getMessages'])->name('get-messages');
+    Route::put('/messages/{message}', [ChatController::class, 'updateMessage'])->name('update-message');
+    Route::delete('/messages/{message}', [ChatController::class, 'deleteMessage'])->name('delete-message');
+    Route::get('/private/{recipient}', [ChatController::class, 'createPrivateChat'])->name('private');
+    Route::get('/managers', [ChatController::class, 'messManagers'])->name('managers')->middleware('can:tenants.manage');
 });
 
 require __DIR__ . '/auth.php';

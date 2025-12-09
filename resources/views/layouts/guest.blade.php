@@ -9,17 +9,49 @@
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
 
         <div class="min-h-screen flex">
-            <div class="flex-1 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24">
-                <div class="mx-auto w-full max-w-sm lg:w-96">
-                    <div class="mb-8">
-                        <a href="/">
-                            <x-application-logo class="w-auto h-12 fill-current text-gray-800" />
+            <!-- Left Side - Form -->
+            <div class="flex-1 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
+                <div class="mx-auto w-full max-w-md">
+                    <!-- Language Switcher -->
+                    <div class="absolute top-4 right-4 lg:right-auto lg:left-4">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors bg-gray-100 px-3 py-2 rounded-lg">
+                                <i class="fa-solid fa-globe mr-2"></i>
+                                বাংলা / English
+                                <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" x-transition
+                                 class="absolute left-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
+                                <form action="{{ route('language.switch') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="en">
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'en' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
+                                        English
+                                    </button>
+                                </form>
+                                <form action="{{ route('language.switch') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="bn">
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'bn' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
+                                        বাংলা
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8 text-center">
+                        <a href="/" class="inline-block">
+                            <x-application-logo class="w-auto h-14 fill-current text-indigo-600" />
                         </a>
                     </div>
 
@@ -27,29 +59,64 @@
                 </div>
             </div>
 
-            {{-- নতুন ইমেজ ব্যাকগ্রাউন্ড সেকশন --}}
-            <div class="hidden lg:flex flex-1 relative bg-cover bg-center"
-                 style="background-image: url('{{ asset('images/auth-bg.jpg') }}');">
-                {{-- Overlay for better text readability --}}
-                <div class="absolute inset-0 bg-gray-900 opacity-70"></div>
+            <!-- Right Side - Branding -->
+            <div class="hidden lg:flex flex-1 relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 overflow-hidden">
+                <!-- Pattern Overlay -->
+                <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+                
+                <!-- Decorative Circles -->
+                <div class="absolute top-20 right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-                <div class="relative z-10 p-12 text-white flex flex-col justify-between">
-                    <div class="text-right">
-                        <a href="/" class="text-sm font-medium text-gray-300 hover:text-white">&larr; Back to Home</a>
+                <div class="relative z-10 p-12 text-white flex flex-col justify-between w-full">
+                    <div class="flex justify-between items-center">
+                        <a href="/" class="inline-flex items-center text-sm font-medium text-white/80 hover:text-white transition-colors">
+                            <i class="fa-solid fa-arrow-left mr-2"></i>
+                            {{ __('auth.back_to_home') }}
+                        </a>
                     </div>
-                    <div>
-                        <h2 class="text-3xl font-bold">
-                            Welcome to MassMeal
+                    
+                    <div class="max-w-md">
+                        <h2 class="text-4xl font-bold leading-tight">
+                            {{ __('auth.welcome') }}
                         </h2>
-                        <p class="mt-4 text-lg text-gray-300">
-                            The all-in-one solution for managing your mess. Track meals, calculate costs, and manage deposits with ease.
+                        <p class="mt-6 text-lg text-white/80 leading-relaxed">
+                            {{ __('auth.welcome_subtitle') }}
                         </p>
+                        
+                        <div class="mt-10 space-y-4">
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-white/20">
+                                    <i class="fa-solid fa-check text-white"></i>
+                                </div>
+                                <span class="ml-4 text-white/90">{{ __('auth.no_credit_card') }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-white/20">
+                                    <i class="fa-solid fa-bolt text-white"></i>
+                                </div>
+                                <span class="ml-4 text-white/90">{{ __('auth.start_free_trial') }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-white/20">
+                                    <i class="fa-solid fa-users text-white"></i>
+                                </div>
+                                <span class="ml-4 text-white/90">{{ __('auth.join_thousands') }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-400">
-                        &copy; {{ date('Y') }} {{ config('app.name') }}.
+                    
+                    <div class="text-sm text-white/60">
+                        &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('landing.all_rights_reserved') }}.
                     </div>
                 </div>
             </div>
         </div>
+
+        <style>
+            .bg-grid-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+        </style>
     </body>
 </html>
