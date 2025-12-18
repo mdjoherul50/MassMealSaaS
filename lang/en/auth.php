@@ -28,4 +28,12 @@ return [
     'start_free_trial' => 'Start your free trial today',
     'no_credit_card' => 'No credit card required',
     'password_requirements' => 'Password must be at least 8 characters',
+    'ssl_notice' => 'Your data is protected with 256-bit SSL encryption',
+    'forgot_password_message' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'email_password_reset_link' => 'Email Password Reset Link',
+    'reset_password' => 'Reset Password',
+    'verify_email_message' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+    'verification_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+    'resend_verification_email' => 'Resend Verification Email',
+    'confirm_password_message' => 'This is a secure area of the application. Please confirm your password before continuing.',
 ];

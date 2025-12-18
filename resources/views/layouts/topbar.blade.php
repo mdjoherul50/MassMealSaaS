@@ -57,17 +57,17 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden" @click.away="open = false">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('common.dashboard') }}
             </x-responsive-nav-link>
 
        @if(Auth::user()->role?->slug == 'member')
             <x-nav-link :href="route('members.myStatement')" :active="request()->routeIs('members.show')">
                 <i class="fa-solid fa-id-card w-6 text-center"></i>
-                <span>{{ __('My Statement') }}</span>
+                <span>{{ __('common.my_statement') }}</span>
             </x-nav-link>
             @can('houserent.view')
             <x-responsive-nav-link :href="route('house-rents.my')" :active="request()->routeIs('house-rents.my')">
-                {{ __('My House Rent') }}
+                {{ __('house_rent.my_house_rent') }}
             </x-responsive-nav-link>
             @endcan
         @endif
@@ -75,46 +75,44 @@
         @if(Auth::user()->role && Auth::user()->role->slug != 'super-admin')
             @can('members.view')
             <x-responsive-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
-                {{ __('Members') }}
+                {{ __('tenant.members') }}
             </x-responsive-nav-link>
             @endcan
 
             @can('meals.view')
             <x-responsive-nav-link :href="route('meals.bulkEntry')" :active="request()->routeIs('meals.bulkEntry')">
-                {{ __('Daily Meal Entry') }}
+                {{ __('common.daily_meal_entry') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('meals.index')" :active="request()->routeIs('meals.index') || request()->routeIs('meals.create') || request()->routeIs('meals.edit') || request()->routeIs('meals.show')">
-                {{ __('All Meal List') }}
+                {{ __('common.all_meal_list') }}
             </x-responsive-nav-link>
             @endcan
 
             @can('bazars.view')
             <x-responsive-nav-link :href="route('bazars.index')" :active="request()->routeIs('bazars.*')">
-                {{ __('Bazar List') }}
+                {{ __('common.bazar_list') }}
             </x-responsive-nav-link>
             @endcan
 
             @can('deposits.view')
             <x-responsive-nav-link :href="route('deposits.index')" :active="request()->routeIs('deposits.*')">
-                {{ __('Deposits') }}
-            </x-responsive-nav-link>
-            @endcan
-
-            @can('houserent.view')
-            <x-responsive-nav-link :href="route('house-rents.index')" :active="request()->routeIs('house-rents.*')">
-                {{ __('House Rent') }}
+                {{ __('common.deposits') }}
             </x-responsive-nav-link>
             @endcan
 
             @can('houserent.manage')
             <x-responsive-nav-link :href="route('house-rent-mains.index')" :active="request()->routeIs('house-rent-mains.*')">
-                {{ __('Rent Management') }}
+                {{ __('common.rent_management') }}
+            </x-responsive-nav-link>
+            @elsecan('houserent.view')
+            <x-responsive-nav-link :href="route('house-rents.index')" :active="request()->routeIs('house-rents.*')">
+                {{ __('house_rent.house_rent') }}
             </x-responsive-nav-link>
             @endcan
 
             @can('reports.view')
             <x-responsive-nav-link :href="route('reports.overview')" :active="request()->routeIs('reports.*')">
-                {{ __('Reports') }}
+                {{ __('common.reports') }}
             </x-responsive-nav-link>
             @endcan
         @endif
@@ -122,17 +120,17 @@
             @if(Auth::user()->role && Auth::user()->role->slug == 'super-admin')
             <div class="mt-4 pt-4 border-t border-gray-200">
                 <div class="px-4">
-                    <div class="font-medium text-base text-gray-800">Super Admin</div>
+                    <div class="font-medium text-base text-gray-800">{{ __('common.super_admin') }}</div>
                 </div>
                 <div class="mt-3 space-y-1">
                     @can('tenants.manage')
                     <x-responsive-nav-link :href="route('superadmin.tenants.index')" :active="request()->routeIs('superadmin.tenants.*')">
-                        {{ __('Manage Tenants') }}
+                        {{ __('common.manage_tenants') }}
                     </x-responsive-nav-link>
                     @endcan
                     @can('roles.manage')
                     <x-responsive-nav-link :href="route('superadmin.roles.index')" :active="request()->routeIs('superadmin.roles.*')">
-                        {{ __('Manage Roles') }}
+                        {{ __('common.manage_roles') }}
                     </x-responsive-nav-link>
                     @endcan
                 </div>
@@ -154,7 +152,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('common.profile') }}
                 </x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -162,7 +160,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('common.logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

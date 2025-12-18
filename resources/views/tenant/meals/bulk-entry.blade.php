@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daily Meal Entry') }}
+            {{ __('common.daily_meal_entry') }}
         </h2>
     </x-slot>
 
@@ -11,10 +11,10 @@
                 <div class="p-6 text-gray-900">
 
                     <form method="GET" action="{{ route('meals.bulkEntry') }}" class="mb-4 flex items-center">
-                        <x-input-label for="date" :value="__('Select Date')" class="mr-2" />
+                        <x-input-label for="date" :value="__('common.select_date')" class="mr-2" />
                         <x-text-input id="date" type="date" name="date" :value="$selectedDate" required />
                         <x-primary-button class="ms-2">
-                            {{ __('Load') }}
+                            {{ __('common.load') }}
                         </x-primary-button>
                     </form>
 
@@ -25,10 +25,10 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Member Name</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Breakfast</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Lunch</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Dinner</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('tenant.member_name') }}</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{{ __('common.breakfast') }}</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{{ __('common.lunch') }}</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{{ __('common.dinner') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -61,7 +61,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
-                                            No members found. Please <a href="{{ route('members.create') }}" class="text-indigo-600 underline">add members</a> first.
+                                            {!! __('common.no_members_found_add_first', ['url' => route('members.create')]) !!}
                                         </td>
                                     </tr>
                                 @endforelse
@@ -71,7 +71,7 @@
                         @if($members->count() > 0)
                             <div class="flex items-center justify-end mt-4">
                                 <x-primary-button>
-                                    {{ __('Save Meals') }}
+                                    {{ __('common.save_meals') }}
                                 </x-primary-button>
                             </div>
                         @endif

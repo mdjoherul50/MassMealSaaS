@@ -42,11 +42,11 @@
                         </div>
                         <div>
                             <select name="subscription_status" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <option value="">Subscription Status</option>
-                                <option value="trial" {{ request('subscription_status') == 'trial' ? 'selected' : '' }}>Trial</option>
-                                <option value="active" {{ request('subscription_status') == 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="expired" {{ request('subscription_status') == 'expired' ? 'selected' : '' }}>Expired</option>
-                                <option value="cancelled" {{ request('subscription_status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                <option value="">{{ __('common.subscription_status') }}</option>
+                                <option value="trial" {{ request('subscription_status') == 'trial' ? 'selected' : '' }}>{{ __('common.trial') }}</option>
+                                <option value="active" {{ request('subscription_status') == 'active' ? 'selected' : '' }}>{{ __('common.active') }}</option>
+                                <option value="expired" {{ request('subscription_status') == 'expired' ? 'selected' : '' }}>{{ __('common.expired') }}</option>
+                                <option value="cancelled" {{ request('subscription_status') == 'cancelled' ? 'selected' : '' }}>{{ __('common.cancelled') }}</option>
                             </select>
                         </div>
                         <div class="flex gap-2">
@@ -54,7 +54,7 @@
                                 {{ __('common.filter') }}
                             </button>
                             <a href="{{ route('superadmin.tenants.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                {{ __('common.clear') ?? 'Clear' }}
+                                {{ __('common.clear') }}
                             </a>
                         </div>
                     </form>
@@ -71,7 +71,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('tenant.owner') }}</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('plan.plan') }}</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{{ __('common.status') }}</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Subscription</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">{{ __('common.subscription') }}</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('common.created_at') }}</th>
                                 <th class="relative px-6 py-3"><span class="sr-only">{{ __('common.actions') }}</span></th>
                             </tr>
@@ -103,15 +103,15 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         @if($tenant->subscription_status == 'trial')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                Trial ({{ $tenant->remainingTrialDays() }} days)
+                                                {{ __('common.trial') }} ({{ $tenant->remainingTrialDays() }} {{ __('common.days') }})
                                             </span>
                                         @elseif($tenant->subscription_status == 'active')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Active
+                                                {{ __('common.active') }}
                                             </span>
                                         @elseif($tenant->subscription_status == 'expired')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                Expired
+                                                {{ __('common.expired') }}
                                             </span>
                                         @else
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
@@ -122,7 +122,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ $tenant->created_at->format('d M, Y') }}</div>
                                         @if($tenant->plan_expires_at)
-                                            <div class="text-sm text-gray-500">Expires: {{ $tenant->plan_expires_at->format('d M, Y') }}</div>
+                                            <div class="text-sm text-gray-500">{{ __('common.expires') }}: {{ $tenant->plan_expires_at->format('d M, Y') }}</div>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -85,6 +85,14 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
         ->name('house-rent-mains.sync')
         ->middleware('can:houserent.manage');
 
+    Route::post('/house-rent-mains/{month}/members', [HouseRentMainController::class, 'saveMemberRents'])
+        ->name('house-rent-mains.members')
+        ->middleware('can:houserent.manage');
+
+    Route::post('/house-rent-mains/{month}/copy-previous', [HouseRentMainController::class, 'copyPreviousMonth'])
+        ->name('house-rent-mains.copy-previous')
+        ->middleware('can:houserent.manage');
+
     Route::post('/house-rent-mains/{month}/carry-forward', [HouseRentMainController::class, 'carryForward'])
         ->name('house-rent-mains.carry-forward')
         ->middleware('can:houserent.manage');

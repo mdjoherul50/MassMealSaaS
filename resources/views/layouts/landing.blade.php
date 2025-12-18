@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name', 'Laravel') }} - Mess Management Made Easy</title>
+        <title>{{ config('app.name', 'Laravel') }} - {{ __('landing.tagline') }}</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -46,7 +46,7 @@
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors">
                                     <i class="fa-solid fa-globe mr-1"></i>
-                                    বাংলা / English
+                                    {{ __('common.bangla') }} / {{ __('common.english') }}
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
@@ -58,7 +58,7 @@
                                         <input type="hidden" name="locale" value="en">
                                         <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'en' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
                                             <i class="fa-solid fa-check mr-2 {{ app()->getLocale() == 'en' ? '' : 'invisible' }}"></i>
-                                            English
+                                            {{ __('common.english') }}
                                         </button>
                                     </form>
                                     <form action="{{ route('language.switch') }}" method="POST">
@@ -66,7 +66,7 @@
                                         <input type="hidden" name="locale" value="bn">
                                         <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'bn' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
                                             <i class="fa-solid fa-check mr-2 {{ app()->getLocale() == 'bn' ? '' : 'invisible' }}"></i>
-                                            বাংলা
+                                            {{ __('common.bangla') }}
                                         </button>
                                     </form>
                                 </div>
@@ -112,14 +112,14 @@
                                         @csrf
                                         <input type="hidden" name="locale" value="en">
                                         <button type="submit" class="px-4 py-2 text-sm rounded-lg {{ app()->getLocale() == 'en' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700' }}">
-                                            English
+                                            {{ __('common.english') }}
                                         </button>
                                     </form>
                                     <form action="{{ route('language.switch') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="locale" value="bn">
                                         <button type="submit" class="px-4 py-2 text-sm rounded-lg {{ app()->getLocale() == 'bn' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700' }}">
-                                            বাংলা
+                                            {{ __('common.bangla') }}
                                         </button>
                                     </form>
                                 </div>

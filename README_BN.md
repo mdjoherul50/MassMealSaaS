@@ -115,6 +115,31 @@ php artisan db:seed
 
 _(যদি কোনো নির্দিষ্ট সিডার চালাতে হয়, তাহলে আপনার সিডার ফাইলে উল্লেখিত নির্দেশনা অনুসরণ করুন।)_
 
+### টেস্টিং / ডেমো ডাটা (কাস্টম কমান্ড)
+
+**একদম ফ্রেশ ডাটাবেস + বেস সিড (roles/permissions/plans ইত্যাদি):**
+
+```bash
+php artisan test:reset
+```
+
+**ডেমো ডাটাসেট (Demo Mess + ২০ সদস্য + meals/bazar/deposit/house rent):**
+
+```bash
+php artisan test:seed --demo
+```
+
+**শুধু বেস ডাটা সিড (roles/permissions/plans ইত্যাদি):**
+
+```bash
+php artisan test:seed
+```
+
+**ডেমো লগইন (লোকাল টেস্টিং):**
+
+-   **Mess Admin**: `messadmin@demo.local` / `password`
+-   **Bazarman**: `bazarman@demo.local` / `password`
+
 ---
 
 ## ৮. অ্যাপ্লিকেশন রান করা

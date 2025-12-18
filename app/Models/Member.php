@@ -16,6 +16,7 @@ class Member extends Model
         'phone',
         'email',
         'join_date',
+        'is_active',
     ];
 
     /**
@@ -42,7 +43,7 @@ class Member extends Model
         return $this->hasMany(Deposit::class);
     }
     protected static function booted(): void
-{
-    static::addGlobalScope(new TenantScope);
-}
+    {
+        static::addGlobalScope(new TenantScope);
+    }
 }

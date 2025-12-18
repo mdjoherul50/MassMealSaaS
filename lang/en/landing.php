@@ -4,6 +4,7 @@ return [
     // Hero Section
     'hero_title_1' => 'Manage Your Mess',
     'hero_title_2' => 'Like Never Before',
+    'tagline' => 'Mess Management Made Easy',
     'hero_subtitle' => 'Stop worrying about calculations. MassMeal SaaS handles all your daily meals, bazar costs, and deposits, giving you a perfect monthly report.',
     'get_started_free' => 'Get Started For Free',
     'view_plans' => 'View Plans',

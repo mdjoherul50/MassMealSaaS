@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // SuperAdminSeeder কে কল করুন
         $this->call([
             RoleAndPermissionSeeder::class,
+            PlanSeeder::class,
         ]);
     }
 }

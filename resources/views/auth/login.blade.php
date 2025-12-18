@@ -79,7 +79,7 @@
 
         <p class="mt-4 text-center text-xs text-gray-500">
             <i class="fa-solid fa-shield-check text-green-500 mr-1"></i>
-            {{ __('Your data is protected with 256-bit SSL encryption') ?? 'Your data is protected with 256-bit SSL encryption' }}
+            {{ __('auth.ssl_notice') }}
         </p>
     </form>
 

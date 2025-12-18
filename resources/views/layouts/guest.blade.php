@@ -24,7 +24,7 @@
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors bg-gray-100 px-3 py-2 rounded-lg">
                                 <i class="fa-solid fa-globe mr-2"></i>
-                                বাংলা / English
+                                {{ __('common.bangla') }} / {{ __('common.english') }}
                                 <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -35,14 +35,14 @@
                                     @csrf
                                     <input type="hidden" name="locale" value="en">
                                     <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'en' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
-                                        English
+                                        {{ __('common.english') }}
                                     </button>
                                 </form>
                                 <form action="{{ route('language.switch') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="locale" value="bn">
                                     <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'bn' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
-                                        বাংলা
+                                        {{ __('common.bangla') }}
                                     </button>
                                 </form>
                             </div>

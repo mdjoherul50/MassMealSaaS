@@ -7,6 +7,33 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Testing / Demo Data
+
+### Fresh database + base seed
+
+```bash
+php artisan test:reset
+```
+
+This will drop all tables, re-run migrations, and run the default seeding (`DatabaseSeeder`).
+
+### Seed demo dataset (20 members + meals/bazar/deposit/house rent)
+
+```bash
+php artisan test:seed --demo
+```
+
+### Seed only base data (roles/permissions/plans, etc.)
+
+```bash
+php artisan test:seed
+```
+
+### Demo credentials
+
+- **Mess Admin**: `messadmin@demo.local` / `password`
+- **Bazarman**: `bazarman@demo.local` / `password`
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
