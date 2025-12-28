@@ -65,7 +65,7 @@
                                             @if($rent->status === 'paid') bg-green-100 text-green-800
                                             @elseif($rent->status === 'partial') bg-yellow-100 text-yellow-800
                                             @else bg-gray-100 text-gray-800 @endif">
-                                            {{ __('house_rent.' . ($rent->status ?? 'pending')) }}
+                                            {{ $rent->status === 'paid' ? __('house_rent.paid') : ($rent->status === 'partial' ? __('house_rent.partial') : __('house_rent.pending')) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

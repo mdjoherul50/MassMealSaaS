@@ -42,6 +42,15 @@ class Member extends Model
     {
         return $this->hasMany(Deposit::class);
     }
+
+    /**
+     * Get the user account for the member.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
+
     protected static function booted(): void
     {
         static::addGlobalScope(new TenantScope);

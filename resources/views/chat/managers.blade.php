@@ -16,7 +16,7 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
                 <div class="p-6">
                     <p class="text-sm text-gray-600 mb-6">
-                        {{ __('Select a mess manager to start a private conversation') ?? 'Select a mess manager to start a private conversation' }}
+                        {{ __('chat.select_manager_to_start') }}
                     </p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -48,7 +48,7 @@
                         @empty
                             <div class="col-span-2 text-center py-12">
                                 <i class="fa-solid fa-user-slash text-5xl text-gray-300 mb-4"></i>
-                                <p class="text-gray-500">{{ __('No managers found') ?? 'No managers found' }}</p>
+                                <p class="text-gray-500">{{ __('chat.no_managers_found') }}</p>
                             </div>
                         @endforelse
                     </div>

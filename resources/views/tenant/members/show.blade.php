@@ -8,6 +8,78 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <!-- Member Profile Card -->
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-2xl mb-6">
+                <div class="p-8">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <!-- Profile Photo -->
+                        <div class="flex-shrink-0">
+                            @if($member->user && $member->user->profile_photo)
+                                <img src="{{ $member->user->profile_photo_url }}" alt="{{ $member->name }}" class="w-48 h-48 rounded-2xl object-cover shadow-lg border-4 border-indigo-100">
+                            @else
+                                <div class="w-48 h-48 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-6xl shadow-lg">
+                                    {{ strtoupper(substr($member->name, 0, 2)) }}
+                                </div>
+                            @endif
+                            @if($member->user && $member->user->is_online)
+                                <div class="mt-3 flex items-center justify-center gap-2">
+                                    <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                                    <span class="text-sm font-medium text-green-600">{{ __('chat.online') }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $member->name }}</h3>
+                            <p class="text-lg text-gray-600 mb-6">{{ $member->user?->role?->name ?? 'Member' }}</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-envelope text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase font-medium">{{ __('common.email') }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $member->email }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-phone text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase font-medium">{{ __('common.phone') }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $member->phone ?? __('common.na') }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-calendar text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase font-medium">{{ __('common.joined') }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $member->join_date ? \Carbon\Carbon::parse($member->join_date)->format('d M, Y') : __('common.na') }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-id-card text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase font-medium">{{ __('common.member_id') }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $member->reg_id ?? '#' . $member->id }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-gray-900">
                     <form method="GET" action="{{ route('members.show', $member) }}" class="flex items-center">

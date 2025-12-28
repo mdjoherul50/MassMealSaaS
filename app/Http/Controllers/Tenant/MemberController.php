@@ -23,7 +23,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::latest()->paginate(20);
+        $members = Member::with('user')->latest()->paginate(20);
         return view('tenant.members.index', compact('members'));
     }
 
@@ -42,7 +42,7 @@ class MemberController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class, // User টেবিলে ইউনিক
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, // User টেবিলে ইউনিক
             'password' => ['required', 'confirmed', Rules\Password::defaults()], // পাসওয়ার্ড ভ্যালিডেশন
             'phone' => 'nullable|string|max:20',
             'join_date' => 'nullable|date',
@@ -50,7 +50,7 @@ class MemberController extends Controller
 
         // 'member' রোলটি খুঁজে বের করুন
         $memberRole = Role::where('slug', 'member')->first();
-        if (! $memberRole) {
+        if (!$memberRole) {
             return back()->with('error', 'Member role not found. Please run seeder.');
         }
 
@@ -88,6 +88,9 @@ class MemberController extends Controller
      */
     public function show(Request $request, Member $member)
     {
+        // Load user relationship for profile photo
+        $member->load('user');
+
         // মাস নির্ধারণ করা
         $selectedMonth = $request->input('month', Carbon::now()->format('Y-m'));
         $startDate = Carbon::parse($selectedMonth . '-01')->startOfMonth();
@@ -106,13 +109,13 @@ class MemberController extends Controller
 
         // সদস্যের মোট মিল (এই মাসে)
         $memberTotalMeal = Meal::where('member_id', $member->id)
-                               ->whereBetween('date', [$startDate, $endDate])
-                               ->sum(DB::raw('breakfast + lunch + dinner'));
+            ->whereBetween('date', [$startDate, $endDate])
+            ->sum(DB::raw('breakfast + lunch + dinner'));
 
         // সদস্যের মোট ডিপোজিট (এই মাসে)
         $memberTotalDeposit = Deposit::where('member_id', $member->id)
-                                     ->whereBetween('date', [$startDate, $endDate])
-                                     ->sum('amount');
+            ->whereBetween('date', [$startDate, $endDate])
+            ->sum('amount');
 
         // সদস্যের মোট চার্জ (এই মাসে)
         $memberTotalCharge = $memberTotalMeal * $avgMealRate;
@@ -121,15 +124,15 @@ class MemberController extends Controller
 
         // তারিখ অনুযায়ী মিলের তালিকা
         $dateWiseMeals = Meal::where('member_id', $member->id)
-                             ->whereBetween('date', [$startDate, $endDate])
-                             ->orderBy('date', 'asc')
-                             ->get();
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date', 'asc')
+            ->get();
 
         // তারিখ অনুযায়ী ডিপোজিটের তালিকা
         $dateWiseDeposits = Deposit::where('member_id', $member->id)
-                                  ->whereBetween('date', [$startDate, $endDate])
-                                  ->orderBy('date', 'asc')
-                                  ->get();
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date', 'asc')
+            ->get();
 
         return view('tenant.members.show', compact(
             'member',
@@ -212,10 +215,10 @@ class MemberController extends Controller
     {
         // লগইন করা ইউজারের ইমেইল দিয়ে Member প্রোফাইলটি খুঁজুন
         $member = Member::where('email', $request->user()->email)
-                        ->where('tenant_id', $request->user()->tenant_id)
-                        ->first();
+            ->where('tenant_id', $request->user()->tenant_id)
+            ->first();
 
-        if (! $member) {
+        if (!$member) {
             return redirect()->route('dashboard')->with('error', 'Your member profile could not be found.');
         }
 

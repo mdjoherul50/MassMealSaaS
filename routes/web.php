@@ -12,6 +12,8 @@ use App\Http\Controllers\Tenant\ReportController;
 use App\Http\Controllers\SuperAdmin\RoleController;
 use App\Http\Controllers\SuperAdmin\TenantController;
 use App\Http\Controllers\SuperAdmin\PlanController;
+use App\Http\Controllers\SuperAdmin\BrandingController as SuperAdminBrandingController;
+use App\Http\Controllers\Tenant\BrandingController as TenantBrandingController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ChatController;
 
@@ -22,12 +24,21 @@ Route::get('/', function () {
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::get('/dashboard', function () {
+    $user = Auth::user();
+
+    // Super Admin gets their own dashboard
+    if ($user->role && $user->role->slug === 'super-admin') {
+        return view('superadmin-dashboard');
+    }
+
+    // Tenant users (mess-admin, bazarman, member) get tenant dashboard
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -66,6 +77,7 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
 
     // Reports (Mess Admin & Member)
     Route::get('reports/overview/{month?}', [ReportController::class, 'overview'])->name('reports.overview')->middleware('can:reports.view');
+    Route::get('reports/overview/pdf', [ReportController::class, 'overviewPdf'])->name('reports.overview.pdf')->middleware('can:reports.view');
 
     Route::resource('house-rents', HouseRentController::class)->middleware([
         'can:houserent.view',
@@ -96,6 +108,9 @@ Route::middleware(['auth', 'check.tenant'])->group(function () {
     Route::post('/house-rent-mains/{month}/carry-forward', [HouseRentMainController::class, 'carryForward'])
         ->name('house-rent-mains.carry-forward')
         ->middleware('can:houserent.manage');
+
+    Route::get('/branding/logo', [TenantBrandingController::class, 'edit'])->name('tenant.branding.logo.edit');
+    Route::post('/branding/logo', [TenantBrandingController::class, 'update'])->name('tenant.branding.logo.update');
 });
 
 // --- সুপার অ্যাডমিন (Super Admin) রাউট গ্রুপ ---
@@ -107,12 +122,16 @@ Route::middleware(['auth', 'can:tenants.manage'])->prefix('superadmin')->name('s
     Route::resource('plans', PlanController::class);
 
     Route::resource('roles', RoleController::class)->middleware('can:roles.manage');
+
+    Route::get('branding/logo', [SuperAdminBrandingController::class, 'edit'])->name('branding.logo.edit');
+    Route::post('branding/logo', [SuperAdminBrandingController::class, 'update'])->name('branding.logo.update');
 });
 
 // --- Chat Routes ---
 Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
     Route::get('/', [ChatController::class, 'index'])->name('index');
     Route::get('/create-group', [ChatController::class, 'createGroupChat'])->name('create-group');
+    Route::get('/members', [ChatController::class, 'members'])->name('members');
     Route::post('/conversations', [ChatController::class, 'store'])->name('store');
     Route::get('/conversations/{conversation}', [ChatController::class, 'show'])->name('show');
     Route::post('/conversations/{conversation}/messages', [ChatController::class, 'sendMessage'])->name('send-message');
@@ -121,6 +140,12 @@ Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
     Route::delete('/messages/{message}', [ChatController::class, 'deleteMessage'])->name('delete-message');
     Route::get('/private/{recipient}', [ChatController::class, 'createPrivateChat'])->name('private');
     Route::get('/managers', [ChatController::class, 'messManagers'])->name('managers')->middleware('can:tenants.manage');
+
+    // Conversation actions
+    Route::post('/conversations/{conversation}/mute', [ChatController::class, 'muteConversation'])->name('mute');
+    Route::post('/conversations/{conversation}/clear', [ChatController::class, 'clearChat'])->name('clear');
+    Route::delete('/conversations/{conversation}', [ChatController::class, 'deleteConversation'])->name('delete');
+    Route::post('/users/{user}/block', [ChatController::class, 'blockUser'])->name('block-user');
 });
 
 require __DIR__ . '/auth.php';

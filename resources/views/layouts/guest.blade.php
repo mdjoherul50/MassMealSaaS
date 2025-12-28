@@ -19,39 +19,9 @@
             <!-- Left Side - Form -->
             <div class="flex-1 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
                 <div class="mx-auto w-full max-w-md">
-                    <!-- Language Switcher -->
-                    <div class="absolute top-4 right-4 lg:right-auto lg:left-4">
-                        <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors bg-gray-100 px-3 py-2 rounded-lg">
-                                <i class="fa-solid fa-globe mr-2"></i>
-                                {{ __('common.bangla') }} / {{ __('common.english') }}
-                                <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div x-show="open" @click.away="open = false" x-transition
-                                 class="absolute left-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
-                                <form action="{{ route('language.switch') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="locale" value="en">
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'en' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
-                                        {{ __('common.english') }}
-                                    </button>
-                                </form>
-                                <form action="{{ route('language.switch') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="locale" value="bn">
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm {{ app()->getLocale() == 'bn' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50' }}">
-                                        {{ __('common.bangla') }}
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="mb-8 text-center">
                         <a href="/" class="inline-block">
-                            <x-application-logo class="w-auto h-14 fill-current text-indigo-600" />
+                            <x-site-logo class="w-auto h-14" />
                         </a>
                     </div>
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Meal Entry') }}
+            {{ __('tenant.edit_meal_entry') }}
         </h2>
     </x-slot>
 
@@ -14,9 +14,9 @@
                         @method('PUT')
                         
                         <div class="mt-4">
-                            <x-input-label for="member_id" :value="__('Member')" />
+                            <x-input-label for="member_id" :value="__('tenant.member')" />
                             <select name="member_id" id="member_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="">Select Member</option>
+                                <option value="">{{ __('common.select_member') }}</option>
                                 @foreach ($members as $member)
                                     <option value="{{ $member->id }}" {{ old('member_id', $meal->member_id) == $member->id ? 'selected' : '' }}>
                                         {{ $member->name }}
@@ -27,24 +27,24 @@
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="date" :value="__('Date')" />
+                            <x-input-label for="date" :value="__('common.date')" />
                             <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" :value="old('date', $meal->date)" required />
                             <x-input-error :messages="$errors->get('date')" class="mt-2" />
                         </div>
 
                         <div class="grid grid-cols-3 gap-4 mt-4">
                             <div>
-                                <x-input-label for="breakfast" :value="__('Breakfast')" />
+                                <x-input-label for="breakfast" :value="__('common.breakfast')" />
                                 <x-text-input id="breakfast" class="block mt-1 w-full" type="number" name="breakfast" :value="old('breakfast', $meal->breakfast)" required />
                                 <x-input-error :messages="$errors->get('breakfast')" class="mt-2" />
                             </div>
                             <div>
-                                <x-input-label for="lunch" :value="__('Lunch')" />
+                                <x-input-label for="lunch" :value="__('common.lunch')" />
                                 <x-text-input id="lunch" class="block mt-1 w-full" type="number" name="lunch" :value="old('lunch', $meal->lunch)" required />
                                 <x-input-error :messages="$errors->get('lunch')" class="mt-2" />
                             </div>
                             <div>
-                                <x-input-label for="dinner" :value="__('Dinner')" />
+                                <x-input-label for="dinner" :value="__('common.dinner')" />
                                 <x-text-input id="dinner" class="block mt-1 w-full" type="number" name="dinner" :value="old('dinner', $meal->dinner)" required />
                                 <x-input-error :messages="$errors->get('dinner')" class="mt-2" />
                             </div>
@@ -52,10 +52,10 @@
 
                         <div class="flex items-center justify-end mt-4">
                             <a href="{{ route('meals.index') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                                {{ __('Cancel') }}
+                                {{ __('common.cancel') }}
                             </a>
                             <x-primary-button class="ms-4">
-                                {{ __('Update Entry') }}
+                                {{ __('common.update') }}
                             </x-primary-button>
                         </div>
                     </form>

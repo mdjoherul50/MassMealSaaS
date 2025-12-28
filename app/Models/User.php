@@ -23,6 +23,9 @@ class User extends Authenticatable
         'password',
         'role_id',   // 'role' এর পরিবর্তে
         'tenant_id',
+        'profile_photo',
+        'last_seen_at',
+        'is_online',
     ];
 
     /**
@@ -45,7 +48,33 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_seen_at' => 'datetime',
+            'is_online' => 'boolean',
         ];
+    }
+
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile_photo) {
+            return \Storage::url($this->profile_photo);
+        }
+        return null;
+    }
+
+    public function updateOnlineStatus()
+    {
+        $this->update([
+            'is_online' => true,
+            'last_seen_at' => now(),
+        ]);
+    }
+
+    public function updateOfflineStatus()
+    {
+        $this->update([
+            'is_online' => false,
+            'last_seen_at' => now(),
+        ]);
     }
 
     /**

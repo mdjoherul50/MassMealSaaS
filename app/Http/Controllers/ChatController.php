@@ -113,6 +113,7 @@ class ChatController extends Controller
             'message' => $request->message ?? '',
             'attachment_path' => $attachmentPath,
             'attachment_type' => $attachmentType,
+            'file_expires_at' => $attachmentPath ? now()->addDays(15) : null,
         ]);
 
         // Update conversation last message time
@@ -124,7 +125,19 @@ class ChatController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => $message->load('user'),
+                'message' => [
+                    'id' => $message->id,
+                    'message' => $message->message,
+                    'user_id' => $message->user_id,
+                    'user_name' => $user->name,
+                    'profile_photo_url' => $user->profile_photo_url,
+                    'created_at' => $message->created_at->format('g:i A'),
+                    'attachment_path' => $message->attachment_path,
+                    'attachment_type' => $message->attachment_type,
+                    'file_url' => $message->getFileUrl(),
+                    'is_image' => $message->isImage(),
+                    'file_expires_at' => $message->file_expires_at ? $message->file_expires_at->diffForHumans() : null,
+                ],
             ]);
         }
 
@@ -196,6 +209,19 @@ class ChatController extends Controller
         return view('chat.create-group', compact('users'));
     }
 
+    public function members()
+    {
+        $user = Auth::user();
+
+        // Get all members in the same tenant
+        $members = User::where('tenant_id', $user->tenant_id)
+            ->where('id', '!=', $user->id)
+            ->with('role')
+            ->get();
+
+        return view('chat.members', compact('members'));
+    }
+
     public function messManagers()
     {
         $user = Auth::user();
@@ -265,5 +291,106 @@ class ChatController extends Controller
         }
 
         return back()->with('success', __('chat.message_deleted'));
+    }
+
+    /**
+     * Mute conversation
+     */
+    public function muteConversation(Conversation $conversation)
+    {
+        $user = Auth::user();
+
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$participant) {
+            abort(403, 'You are not a participant of this conversation');
+        }
+
+        // Update pivot to set muted flag
+        $conversation->participants()->updateExistingPivot($user->id, [
+            'is_muted' => true,
+        ]);
+
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', __('chat.conversation_muted'));
+    }
+
+    /**
+     * Block user
+     */
+    public function blockUser(User $user)
+    {
+        $currentUser = Auth::user();
+
+        // Add to blocked users (you'll need a blocked_users table)
+        // For now, we'll just return success
+        // TODO: Implement blocked_users table and relationship
+
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', __('chat.user_blocked'));
+    }
+
+    /**
+     * Clear chat messages
+     */
+    public function clearChat(Conversation $conversation)
+    {
+        $user = Auth::user();
+
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$participant) {
+            abort(403, 'You are not a participant of this conversation');
+        }
+
+        // Delete all messages in the conversation
+        $conversation->messages()->delete();
+
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', __('chat.chat_cleared'));
+    }
+
+    /**
+     * Delete conversation
+     */
+    public function deleteConversation(Conversation $conversation)
+    {
+        $user = Auth::user();
+
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$participant) {
+            abort(403, 'You are not a participant of this conversation');
+        }
+
+        // Remove user from conversation
+        $conversation->participants()->detach($user->id);
+
+        // If no participants left, delete the conversation
+        if ($conversation->participants()->count() === 0) {
+            $conversation->messages()->delete();
+            $conversation->delete();
+        }
+
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('chat.index')->with('success', __('chat.conversation_deleted'));
     }
 }

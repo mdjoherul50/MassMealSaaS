@@ -59,7 +59,7 @@
                                         <option value="">{{ __('plan.select_plan') }}</option>
                                         @foreach($plans as $plan)
                                             <option value="{{ $plan->id }}" {{ old('plan_id') == $plan->id ? 'selected' : '' }}>
-                                                {{ $plan->name }} - ৳{{ number_format($plan->price_monthly, 0) }}/{{ __('plan.monthly') }}
+                                                {{ $plan->name }} - ৳{{ number_format((float) $plan->price_monthly, 0) }}/{{ __('plan.monthly') }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -84,7 +84,7 @@
 
                         <!-- Owner Information Section -->
                         <div class="mb-8 border-t pt-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('tenant.owner') }} {{ __('common.info') ?? 'Information' }}</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('tenant.owner_information') }}</h3>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Owner Name -->
@@ -118,7 +118,7 @@
                                     </label>
                                     <input type="password" name="owner_password" id="owner_password" required minlength="8"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    <p class="mt-1 text-sm text-gray-500">Minimum 8 characters</p>
+                                    <p class="mt-1 text-sm text-gray-500">{{ __('common.minimum_8_characters') }}</p>
                                     @error('owner_password')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -133,11 +133,11 @@
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
                                 <div class="text-sm text-blue-700">
-                                    <p class="font-medium">Note:</p>
+                                    <p class="font-medium">{{ __('common.note') }}:</p>
                                     <ul class="list-disc list-inside mt-1 space-y-1">
-                                        <li>A new user account will be created for the owner</li>
-                                        <li>The tenant will start with a trial period based on the selected plan</li>
-                                        <li>Owner will receive login credentials via email (if configured)</li>
+                                        <li>{{ __('tenant.note_owner_account_will_be_created') }}</li>
+                                        <li>{{ __('tenant.note_trial_period_based_on_plan') }}</li>
+                                        <li>{{ __('tenant.note_owner_will_receive_credentials') }}</li>
                                     </ul>
                                 </div>
                             </div>

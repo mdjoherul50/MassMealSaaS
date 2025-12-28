@@ -32,7 +32,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($deposit->date)->format('d M, Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $deposit->member->name ?? __('common.na') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ number_format($deposit->amount, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $deposit->method }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $deposit->method ?? __('common.na') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{ route('deposits.show', $deposit) }}" class="text-gray-600 hover:text-gray-900">{{ __('common.view') }}</a>
                                         @can('deposits.manage')

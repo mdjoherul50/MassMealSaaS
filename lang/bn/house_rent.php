@@ -43,4 +43,12 @@ return [
     'payment_status' => 'পেমেন্ট অবস্থা',
     'utilities' => 'ইউটিলিটি',
     'rent_breakdown' => 'ভাড়া বিভাজন',
+    'your_house_rent_entries' => 'আপনার বাড়ি ভাড়ার তালিকা',
+    'my_house_rent_info' => 'প্রতিটি মাসের মোট পরিমাণ মূল ভাড়ার রেকর্ড থেকে গণনা করা হয়। যে কোনো অবশিষ্ট ব্যালেন্স পরবর্তী মাসে বহন করা হয়।',
+    'extra_note_optional' => 'অতিরিক্ত নোট (ঐচ্ছিক)',
+    'save_house_rent' => 'বাড়ি ভাড়া সংরক্ষণ করুন',
+    'update_house_rent' => 'বাড়ি ভাড়া আপডেট করুন',
+    'add_house_rent_month' => 'বাড়ি ভাড়ার মাস যোগ করুন',
+    'edit_house_rent_month' => 'বাড়ি ভাড়ার মাস সম্পাদনা',
+    'month_cannot_be_changed' => 'মাস পরিবর্তন করা যাবে না।',
 ];

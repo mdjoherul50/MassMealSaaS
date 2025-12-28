@@ -68,10 +68,15 @@ return [
     'mess_managers' => 'মেস ম্যানেজার',
     'chat_with_manager' => 'ম্যানেজারের সাথে চ্যাট',
     'all_managers' => 'সব ম্যানেজার',
+    'select_manager_to_start' => 'ব্যক্তিগত কথোপকথন শুরু করতে একজন মেস ম্যানেজার নির্বাচন করুন',
+    'no_managers_found' => 'কোনো ম্যানেজার পাওয়া যায়নি',
 
     // Errors
     'not_participant' => 'আপনি এই কথোপকথনের অংশগ্রহণকারী নন',
     'message_failed' => 'বার্তা পাঠাতে ব্যর্থ',
+    'error_sending_message' => 'বার্তা পাঠাতে ত্রুটি:',
+    'error_updating_message' => 'বার্তা আপডেটে ত্রুটি:',
+    'error_deleting_message' => 'বার্তা মুছতে ত্রুটি:',
     'file_too_large' => 'ফাইল খুব বড় (সর্বোচ্চ ১০MB)',
 
     // Info
@@ -90,4 +95,39 @@ return [
     'editing' => 'সম্পাদনা করা হচ্ছে...',
     'deleted' => 'এই বার্তাটি মুছে ফেলা হয়েছে',
     'message_edited' => 'সম্পাদিত',
+
+    // File expiry
+    'file_expired' => 'ফাইলের মেয়াদ শেষ হয়েছে',
+    'expires' => 'মেয়াদ শেষ',
+    'download_file' => 'ফাইল ডাউনলোড করুন',
+    'confirm_delete_message' => 'আপনি কি নিশ্চিত যে আপনি এই বার্তাটি মুছতে চান?',
+    'edit' => 'সম্পাদনা',
+
+    // Members
+    'select_member_to_start' => 'ব্যক্তিগত কথোপকথন শুরু করতে একজন সদস্য নির্বাচন করুন',
+    'no_members_found' => 'কোনো সদস্য পাওয়া যায়নি',
+    'new_chat' => 'নতুন চ্যাট',
+
+    // Chat actions
+    'view_profile' => 'প্রোফাইল দেখুন',
+    'mute_conversation' => 'কথোপকথন মিউট করুন',
+    'block_user' => 'ব্যবহারকারী ব্লক করুন',
+    'clear_chat' => 'চ্যাট মুছুন',
+    'delete_conversation' => 'কথোপকথন ডিলিট করুন',
+    'confirm_mute' => 'আপনি কি এই কথোপকথন মিউট করতে চান?',
+    'confirm_block' => 'আপনি কি এই ব্যবহারকারীকে ব্লক করতে চান?',
+    'confirm_clear' => 'আপনি কি সমস্ত বার্তা মুছে ফেলতে চান? এটি পূর্বাবস্থায় ফেরানো যাবে না।',
+    'confirm_delete_conversation' => 'আপনি কি এই কথোপকথন ডিলিট করতে চান? এটি পূর্বাবস্থায় ফেরানো যাবে না।',
+    'conversation_muted' => 'কথোপকথন সফলভাবে মিউট করা হয়েছে',
+    'user_blocked' => 'ব্যবহারকারী সফলভাবে ব্লক করা হয়েছে',
+    'chat_cleared' => 'চ্যাট সফলভাবে মুছে ফেলা হয়েছে',
+    'conversation_deleted' => 'কথোপকথন সফলভাবে ডিলিট করা হয়েছে',
+    'action_failed' => 'কাজটি ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
+
+    // Online Status
+    'online' => 'অনলাইন',
+    'offline' => 'অফলাইন',
+    'last_seen' => 'শেষ দেখা',
+    'never' => 'কখনো না',
+    'typing' => 'টাইপ করছে...',
 ];

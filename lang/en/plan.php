@@ -36,6 +36,9 @@ return [
     'select_plan' => 'Select Plan',
     'subscribe' => 'Subscribe',
     'trial_days' => 'Trial Days',
+    'sort_order' => 'Sort Order',
     'is_active' => 'Is Active',
     'is_popular' => 'Is Popular',
+    'subscription' => 'Subscription',
+    'manage_plans' => 'Manage Plans',
 ];

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Role') }}
+            {{ __('role.create_new_role') }}
         </h2>
     </x-slot>
 
@@ -13,19 +13,19 @@
                         @csrf
                         
                         <div>
-                            <x-input-label for="name" :value="__('Role Name')" />
+                            <x-input-label for="name" :value="__('role.role_name')" />
                             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         
                         <div class="mt-4">
-                            <x-input-label for="slug" :value="__('Role Slug (e.g., new-manager)')" />
+                            <x-input-label for="slug" :value="__('role.role_slug_example')" />
                             <x-text-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug')" required />
                             <x-input-error :messages="$errors->get('slug')" class="mt-2" />
                         </div>
 
                         <div class="mt-6">
-                            <h3 class="text-lg font-medium text-gray-900">Permissions</h3>
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('role.permissions') }}</h3>
                             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach ($permissions as $groupName => $groupPermissions)
                                     <div class="space-y-2">
@@ -45,10 +45,10 @@
 
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('superadmin.roles.index') }}" class="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                {{ __('Cancel') }}
+                                {{ __('common.cancel') }}
                             </a>
                             <x-primary-button class="ms-4">
-                                {{ __('Save Role') }}
+                                {{ __('role.save_role') }}
                             </x-primary-button>
                         </div>
                     </form>

@@ -36,6 +36,9 @@ return [
     'select_plan' => 'প্ল্যান নির্বাচন করুন',
     'subscribe' => 'সাবস্ক্রাইব',
     'trial_days' => 'ট্রায়াল দিন',
+    'sort_order' => 'ক্রম',
     'is_active' => 'সক্রিয়',
     'is_popular' => 'জনপ্রিয়',
+    'subscription' => 'সাবস্ক্রিপশন',
+    'manage_plans' => 'প্ল্যান ব্যবস্থাপনা',
 ];

@@ -21,7 +21,7 @@
                     <div class="flex justify-between h-16">
                         <div class="flex items-center">
                             <a href="/">
-                                <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                                <x-site-logo class="block h-9 w-auto" />
                             </a>
                         </div>
 
@@ -158,7 +158,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <!-- Brand -->
                         <div class="col-span-1 md:col-span-2">
-                            <x-application-logo class="h-10 w-auto fill-current text-white" />
+                            <x-site-logo class="h-10 w-auto" />
                             <p class="mt-4 text-gray-400 text-sm max-w-md">
                                 {{ __('landing.hero_subtitle') }}
                             </p>
@@ -181,11 +181,11 @@
                             <ul class="mt-4 space-y-2">
                                 <li class="flex items-center text-gray-400 text-sm">
                                     <i class="fa-solid fa-envelope mr-2"></i>
-                                    support@massmeal.com
+                                    {{ __('landing.support_email') }}
                                 </li>
                                 <li class="flex items-center text-gray-400 text-sm">
                                     <i class="fa-brands fa-github mr-2"></i>
-                                    <a href="https://github.com/mdjoherul50" class="hover:text-white" target="_blank">GitHub</a>
+                                    <a href="https://github.com/mdjoherul50" class="hover:text-white" target="_blank">{{ __('landing.github') }}</a>
                                 </li>
                             </ul>
                         </div>

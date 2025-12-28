@@ -43,4 +43,11 @@ return [
     'payment_status' => 'Payment Status',
     'utilities' => 'Utilities',
     'rent_breakdown' => 'Rent Breakdown',
+    'your_house_rent_entries' => 'Your House Rent Entries',
+    'my_house_rent_info' => 'Total amounts are calculated from the main rent record for each month. Any remaining balance is carried forward to the next month.',
+    'save_house_rent' => 'Save House Rent',
+    'update_house_rent' => 'Update House Rent',
+    'add_house_rent_month' => 'Add House Rent Month',
+    'edit_house_rent_month' => 'Edit House Rent Month',
+    'month_cannot_be_changed' => 'Month cannot be changed.',
 ];

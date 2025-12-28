@@ -60,4 +60,6 @@ return [
     'home' => 'হোম',
     'about' => 'সম্পর্কে',
     'contact' => 'যোগাযোগ',
+    'github' => 'গিটহাব',
+    'support_email' => 'support@massmeal.com',
 ];

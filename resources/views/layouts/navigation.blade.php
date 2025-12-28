@@ -4,7 +4,7 @@
             <div class="flex">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-tenant-logo class="block h-9 w-auto" />
                     </a>
                 </div>
 
@@ -40,6 +40,13 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            @if(Auth::user()->profile_photo)
+                                <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover mr-2 border-2 border-gray-200">
+                            @else
+                                <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mr-2 text-white font-semibold text-xs">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                                </div>
+                            @endif
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -106,9 +113,18 @@
                 <x-language-switcher />
             </div>
 
-            <div class="px-4 mt-3">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            <div class="px-4 mt-3 flex items-center gap-3">
+                @if(Auth::user()->profile_photo)
+                    <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-200">
+                @else
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                @endif
+                <div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
             </div>
 
             <div class="mt-3 space-y-1">

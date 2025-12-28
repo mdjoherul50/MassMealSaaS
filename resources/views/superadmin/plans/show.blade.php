@@ -79,12 +79,12 @@
                         <!-- Trial Days -->
                         <div class="bg-blue-50 p-4 rounded-lg">
                             <p class="text-sm text-blue-600">{{ __('plan.trial_days') }}</p>
-                            <p class="text-xl font-bold text-blue-900">{{ $plan->trial_days }} days</p>
+                            <p class="text-xl font-bold text-blue-900">{{ $plan->trial_days }} {{ __('common.days') }}</p>
                         </div>
 
                         <!-- Sort Order -->
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm text-gray-600">Sort Order</p>
+                            <p class="text-sm text-gray-600">{{ __('plan.sort_order') }}</p>
                             <p class="text-xl font-bold text-gray-900">{{ $plan->sort_order }}</p>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('tenant.tenant_name') }}</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('common.status') }}</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subscription</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('common.subscription') }}</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('common.created_at') }}</th>
                                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{{ __('common.actions') }}</th>
                                     </tr>
@@ -134,7 +134,7 @@
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900">{{ $tenant->name }}</div>
-                                                <div class="text-sm text-gray-500">{{ $tenant->owner->name ?? 'N/A' }}</div>
+                                                <div class="text-sm text-gray-500">{{ $tenant->owner->name ?? __('common.na') }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $tenant->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
@@ -142,12 +142,27 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                    {{ $tenant->subscription_status == 'trial' ? 'bg-blue-100 text-blue-800' : '' }}
-                                                    {{ $tenant->subscription_status == 'active' ? 'bg-green-100 text-green-800' : '' }}
-                                                    {{ $tenant->subscription_status == 'expired' ? 'bg-red-100 text-red-800' : '' }}">
-                                                    {{ ucfirst($tenant->subscription_status) }}
-                                                </span>
+                                                @if($tenant->subscription_status == 'trial')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                        {{ __('common.trial') }}
+                                                    </span>
+                                                @elseif($tenant->subscription_status == 'active')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                        {{ __('common.active') }}
+                                                    </span>
+                                                @elseif($tenant->subscription_status == 'expired')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                        {{ __('common.expired') }}
+                                                    </span>
+                                                @elseif($tenant->subscription_status == 'cancelled')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                        {{ __('common.cancelled') }}
+                                                    </span>
+                                                @else
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                        {{ __('common.na') }}
+                                                    </span>
+                                                @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {{ $tenant->created_at->format('d M, Y') }}

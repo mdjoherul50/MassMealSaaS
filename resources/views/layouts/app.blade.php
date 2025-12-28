@@ -24,7 +24,7 @@
                 @include('layouts.sidebar')
             </aside>
 
-            <div class="flex-1 flex flex-col h-screen overflow-y-auto">
+            <div class="flex-1 flex flex-col">
 
                 @include('layouts.topbar')
 

@@ -6,6 +6,10 @@
                 {{ __('chat.chats') }}
             </h2>
             <div class="flex space-x-2">
+                <a href="{{ route('chat.members') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-sm font-medium rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md hover:shadow-lg">
+                    <i class="fa-solid fa-user-plus mr-2"></i>
+                    {{ __('chat.new_chat') }}
+                </a>
                 @if(Auth::user()->role->slug === 'mess-admin' || Auth::user()->role->slug === 'super-admin')
                     <a href="{{ route('chat.create-group') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
                         <i class="fa-solid fa-users-plus mr-2"></i>
@@ -41,8 +45,20 @@
                                                 <i class="fa-solid fa-users"></i>
                                             </div>
                                         @else
-                                            <div class="h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
-                                                {{ strtoupper(substr($otherParticipants->first()->name ?? 'U', 0, 1)) }}
+                                            @php
+                                                $otherUser = $otherParticipants->first();
+                                            @endphp
+                                            <div class="relative">
+                                                @if($otherUser && $otherUser->profile_photo)
+                                                    <img src="{{ $otherUser->profile_photo_url }}" alt="{{ $otherUser->name }}" class="h-14 w-14 rounded-full object-cover">
+                                                @else
+                                                    <div class="h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                                                        {{ strtoupper(substr($otherUser->name ?? 'U', 0, 1)) }}
+                                                    </div>
+                                                @endif
+                                                @if($otherUser && $otherUser->is_online)
+                                                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>

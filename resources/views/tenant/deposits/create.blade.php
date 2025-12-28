@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add New Deposit Entry') }}
+            {{ __('common.add_new_deposit_entry') }}
         </h2>
     </x-slot>
 
@@ -14,15 +14,15 @@
                         @csrf
                         
                         <div class="mt-4">
-                            <x-input-label for="date" :value="__('Date')" />
+                            <x-input-label for="date" :value="__('common.date')" />
                             <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" :value="old('date', date('Y-m-d'))" required />
                             <x-input-error :messages="$errors->get('date')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="member_id" :value="__('Member')" />
+                            <x-input-label for="member_id" :value="__('tenant.member')" />
                             <select name="member_id" id="member_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                <option value="">Select Member</option>
+                                <option value="">{{ __('common.select_member') }}</option>
                                 @foreach ($members as $member)
                                     <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
                                         {{ $member->name }}
@@ -33,29 +33,29 @@
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="amount" :value="__('Amount')" />
+                            <x-input-label for="amount" :value="__('common.amount')" />
                             <x-text-input id="amount" class="block mt-1 w-full" type="number" step="0.01" name="amount" :value="old('amount')" required />
                             <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="method" :value="__('Method (Optional)')" />
-                            <x-text-input id="method" class="block mt-1 w-full" type="text" name="method" :value="old('method', 'Cash')" />
+                            <x-input-label for="method" :value="__('common.method_optional')" />
+                            <x-text-input id="method" class="block mt-1 w-full" type="text" name="method" :value="old('method', __('common.cash'))" />
                             <x-input-error :messages="$errors->get('method')" class="mt-2" />
                         </div>
                         
                         <div class="mt-4">
-                            <x-input-label for="reference" :value="__('Reference (Optional)')" />
+                            <x-input-label for="reference" :value="__('common.reference_optional')" />
                             <x-text-input id="reference" class="block mt-1 w-full" type="text" name="reference" :value="old('reference')" />
                             <x-input-error :messages="$errors->get('reference')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <a href="{{ route('deposits.index') }}" class="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                {{ __('Cancel') }}
+                                {{ __('common.cancel') }}
                             </a>
                             <x-primary-button class="ms-4">
-                                {{ __('Save Deposit') }}
+                                {{ __('common.save') }}
                             </x-primary-button>
                         </div>
                     </form>

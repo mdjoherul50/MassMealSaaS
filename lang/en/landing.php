@@ -60,4 +60,6 @@ return [
     'home' => 'Home',
     'about' => 'About',
     'contact' => 'Contact',
+    'github' => 'GitHub',
+    'support_email' => 'support@massmeal.com',
 ];

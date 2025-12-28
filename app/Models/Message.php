@@ -18,6 +18,7 @@ class Message extends Model
         'message',
         'attachment_path',
         'attachment_type',
+        'file_expires_at',
         'is_read',
         'read_at',
     ];
@@ -25,6 +26,7 @@ class Message extends Model
     protected $casts = [
         'is_read' => 'boolean',
         'read_at' => 'datetime',
+        'file_expires_at' => 'datetime',
     ];
 
     protected $appends = ['time_ago'];
@@ -76,5 +78,18 @@ class Message extends Model
     public function isFile(): bool
     {
         return $this->attachment_type === 'file';
+    }
+
+    public function isFileExpired(): bool
+    {
+        return $this->hasAttachment() && $this->file_expires_at && $this->file_expires_at->isPast();
+    }
+
+    public function getFileUrl(): ?string
+    {
+        if (!$this->hasAttachment() || $this->isFileExpired()) {
+            return null;
+        }
+        return \Storage::url($this->attachment_path);
     }
 }

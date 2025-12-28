@@ -1,13 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                <i class="fa-solid fa-chart-line mr-2"></i>
-                {{ __('common.dashboard') }}
-            </h2>
-            <div class="text-sm text-gray-600">
-                <i class="fa-solid fa-calendar mr-1"></i>
-                {{ now()->format('F Y') }}
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-30 animate-pulse"></div>
+                    <div class="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl">
+                        <i class="fa-solid fa-gauge-high text-white text-2xl"></i>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="font-black text-3xl bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 bg-clip-text text-transparent">
+                        {{ __('common.dashboard') }}
+                    </h2>
+                    <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        {{ __('common.welcome_back') }}, <span class="font-semibold text-purple-600">{{ Auth::user()->name }}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-3">
+                <div class="bg-gradient-to-br from-white to-purple-50 px-5 py-3 rounded-2xl border border-purple-100 shadow-lg">
+                    <div class="text-[10px] text-purple-600 uppercase tracking-widest font-bold">{{ __('common.current_month') }}</div>
+                    <div class="text-lg font-bold text-gray-900 mt-0.5 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-purple-500"></i>
+                        {{ now()->format('F Y') }}
+                    </div>
+                </div>
             </div>
         </div>
     </x-slot>
@@ -27,58 +45,138 @@
         $rentMain = \App\Models\HouseRentMain::where('month', $currentMonth)->first();
     @endphp
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            
             <!-- Meal Statistics -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                    <i class="fa-solid fa-utensils mr-2"></i>
-                    {{ __('Meal Statistics') ?? 'Meal Statistics' }}
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 overflow-hidden shadow-lg sm:rounded-lg">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium uppercase tracking-wider opacity-90">{{ __('Total Deposits') ?? 'Total Deposits' }}</h3>
-                                    <p class="mt-2 text-3xl font-bold">৳{{ number_format($totalDeposits, 2) }}</p>
+            <div class="relative">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl blur opacity-40"></div>
+                            <div class="relative w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fa-solid fa-utensils text-white text-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-gray-900">
+                                {{ __('common.meal_statistics') }}
+                            </h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider">{{ __('common.this_month') }} Overview</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/30">
+                            <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
+                            {{ __('common.live') }}
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Total Deposits Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-600 overflow-hidden rounded-3xl shadow-2xl">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16"></div>
+                            <div class="p-6 text-white relative z-10">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20">
+                                        <i class="fa-solid fa-wallet text-2xl"></i>
+                                    </div>
+                                    <div class="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {{ __('common.this_month') }}
+                                    </div>
                                 </div>
-                                <i class="fa-solid fa-wallet text-4xl opacity-20"></i>
+                                <h3 class="text-xs font-bold uppercase tracking-widest opacity-80 mb-3">{{ __('common.total_deposits') }}</h3>
+                                <p class="text-4xl font-black tracking-tight">৳{{ number_format($totalDeposits, 0) }}</p>
+                                <div class="mt-4 pt-4 border-t border-white/20">
+                                    <div class="flex items-center text-xs opacity-80">
+                                        <i class="fa-solid fa-arrow-up mr-1"></i>
+                                        <span>{{ __('common.income') }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 overflow-hidden shadow-lg sm:rounded-lg">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium uppercase tracking-wider opacity-90">{{ __('Total Bazar') ?? 'Total Bazar' }}</h3>
-                                    <p class="mt-2 text-3xl font-bold">৳{{ number_format($totalBazar, 2) }}</p>
+
+                    <!-- Total Bazar Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative bg-gradient-to-br from-purple-500 via-purple-600 to-pink-600 overflow-hidden rounded-3xl shadow-2xl">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16"></div>
+                            <div class="p-6 text-white relative z-10">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20">
+                                        <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                                    </div>
+                                    <div class="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {{ __('common.expenses') }}
+                                    </div>
                                 </div>
-                                <i class="fa-solid fa-shopping-cart text-4xl opacity-20"></i>
+                                <h3 class="text-xs font-bold uppercase tracking-widest opacity-80 mb-3">{{ __('common.total_bazar') }}</h3>
+                                <p class="text-4xl font-black tracking-tight">৳{{ number_format($totalBazar, 0) }}</p>
+                                <div class="mt-4 pt-4 border-t border-white/20">
+                                    <div class="flex items-center text-xs opacity-80">
+                                        <i class="fa-solid fa-arrow-down mr-1"></i>
+                                        <span>{{ __('common.spent') }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-green-500 to-green-600 overflow-hidden shadow-lg sm:rounded-lg">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium uppercase tracking-wider opacity-90">{{ __('Meal Rate') ?? 'Meal Rate' }}</h3>
-                                    <p class="mt-2 text-3xl font-bold">৳{{ number_format($avgMealRate, 2) }}</p>
-                                    <p class="text-xs opacity-75 mt-1">{{ number_format($totalMeal) }} {{ __('meals') ?? 'meals' }}</p>
+
+                    <!-- Meal Rate Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 overflow-hidden rounded-3xl shadow-2xl">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16"></div>
+                            <div class="p-6 text-white relative z-10">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20">
+                                        <i class="fa-solid fa-calculator text-2xl"></i>
+                                    </div>
+                                    <div class="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {{ __('common.per_meal') }}
+                                    </div>
                                 </div>
-                                <i class="fa-solid fa-calculator text-4xl opacity-20"></i>
+                                <h3 class="text-xs font-bold uppercase tracking-widest opacity-80 mb-3">{{ __('common.meal_rate') }}</h3>
+                                <p class="text-4xl font-black tracking-tight">৳{{ number_format($avgMealRate, 2) }}</p>
+                                <div class="mt-4 pt-4 border-t border-white/20">
+                                    <div class="flex items-center text-xs opacity-80">
+                                        <i class="fa-solid fa-utensils mr-1"></i>
+                                        <span>{{ number_format($totalMeal) }} {{ __('common.meals') }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-{{ $mealNet >= 0 ? 'teal' : 'red' }}-500 to-{{ $mealNet >= 0 ? 'teal' : 'red' }}-600 overflow-hidden shadow-lg sm:rounded-lg">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium uppercase tracking-wider opacity-90">{{ __('Balance') ?? 'Balance' }}</h3>
-                                    <p class="mt-2 text-3xl font-bold">৳{{ number_format(abs($mealNet), 2) }}</p>
-                                    <p class="text-xs opacity-75 mt-1">{{ $mealNet >= 0 ? __('Extra') ?? 'Extra' : __('Deficit') ?? 'Deficit' }}</p>
+
+                    <!-- Balance Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-{{ $mealNet >= 0 ? 'amber' : 'rose' }}-500 to-{{ $mealNet >= 0 ? 'orange' : 'red' }}-600 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative bg-gradient-to-br from-{{ $mealNet >= 0 ? 'amber-500 via-orange-500 to-orange' : 'rose-500 via-red-500 to-red' }}-600 overflow-hidden rounded-3xl shadow-2xl">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16"></div>
+                            <div class="p-6 text-white relative z-10">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20">
+                                        <i class="fa-solid fa-{{ $mealNet >= 0 ? 'piggy-bank' : 'triangle-exclamation' }} text-2xl"></i>
+                                    </div>
+                                    <div class="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                        {{ $mealNet >= 0 ? __('common.surplus') : __('common.deficit') }}
+                                    </div>
                                 </div>
-                                <i class="fa-solid fa-{{ $mealNet >= 0 ? 'arrow-trend-up' : 'arrow-trend-down' }} text-4xl opacity-20"></i>
+                                <h3 class="text-xs font-bold uppercase tracking-widest opacity-80 mb-3">{{ __('common.balance') }}</h3>
+                                <p class="text-4xl font-black tracking-tight">৳{{ number_format(abs($mealNet), 0) }}</p>
+                                <div class="mt-4 pt-4 border-t border-white/20">
+                                    <div class="flex items-center text-xs opacity-80">
+                                        <i class="fa-solid fa-{{ $mealNet >= 0 ? 'check-circle' : 'exclamation-circle' }} mr-1"></i>
+                                        <span>{{ $mealNet >= 0 ? __('common.extra') : __('common.deficit') }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,84 +184,170 @@
             </div>
 
             <!-- House Rent Statistics -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                    <i class="fa-solid fa-house mr-2"></i>
-                    {{ __('house_rent.house_rent_management') }}
-                </h3>
+            <div class="relative">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-orange-600 to-rose-600 rounded-xl blur opacity-40"></div>
+                            <div class="relative w-12 h-12 bg-gradient-to-br from-orange-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fa-solid fa-house text-white text-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-gray-900">
+                                {{ __('house_rent.house_rent_management') }}
+                            </h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider">{{ __('common.monthly_total') }}</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg border-l-4 border-orange-500">
+                    <!-- Total Rent -->
+                    <div class="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-500 to-amber-500"></div>
                         <div class="p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">{{ __('house_rent.total_rent') }}</h3>
-                                    <p class="mt-2 text-2xl font-bold text-gray-900">
-                                        ৳{{ $rentMain ? number_format((float) $rentMain->total, 2) : '0.00' }}
-                                    </p>
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                    <i class="fa-solid fa-building text-3xl text-orange-600"></i>
                                 </div>
-                                <i class="fa-solid fa-building text-3xl text-orange-500 opacity-30"></i>
+                                <div class="text-right">
+                                    <span class="text-[10px] font-bold text-orange-600 uppercase tracking-wider bg-orange-100 px-2 py-1 rounded-full">{{ __('common.monthly_total') }}</span>
+                                </div>
                             </div>
+                            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{{ __('house_rent.total_rent') }}</h3>
+                            <p class="text-3xl font-black text-gray-900">
+                                ৳{{ $rentMain ? number_format((float) $rentMain->total, 0) : '0' }}
+                            </p>
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg border-l-4 border-blue-500">
+
+                    <!-- Assigned to Members -->
+                    <div class="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                         <div class="p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">{{ __('house_rent.assigned_to_members') }}</h3>
-                                    <p class="mt-2 text-2xl font-bold text-gray-900">
-                                        ৳{{ $rentMain ? number_format((float) $rentMain->assigned_to_members, 2) : '0.00' }}
-                                    </p>
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                    <i class="fa-solid fa-users text-3xl text-blue-600"></i>
                                 </div>
-                                <i class="fa-solid fa-users text-3xl text-blue-500 opacity-30"></i>
+                                <div class="text-right">
+                                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wider bg-blue-100 px-2 py-1 rounded-full">{{ __('common.distributed') }}</span>
+                                </div>
                             </div>
+                            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{{ __('house_rent.assigned_to_members') }}</h3>
+                            <p class="text-3xl font-black text-gray-900">
+                                ৳{{ $rentMain ? number_format((float) $rentMain->assigned_to_members, 0) : '0' }}
+                            </p>
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg border-l-4 border-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'red' : 'green' }}-500">
+
+                    <!-- Remaining Balance -->
+                    <div class="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'rose-500 to-red' : 'emerald-500 to-green' }}-500"></div>
                         <div class="p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">{{ __('house_rent.remaining_balance') }}</h3>
-                                    <p class="mt-2 text-2xl font-bold {{ $rentMain && $rentMain->remaining_balance > 0 ? 'text-red-600' : 'text-green-600' }}">
-                                        ৳{{ $rentMain ? number_format(abs((float) $rentMain->remaining_balance), 2) : '0.00' }}
-                                    </p>
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-16 h-16 bg-gradient-to-br from-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'rose' : 'emerald' }}-100 to-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'red' : 'green' }}-100 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                    <i class="fa-solid fa-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'triangle-exclamation' : 'circle-check' }} text-3xl text-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'rose' : 'emerald' }}-600"></i>
                                 </div>
-                                <i class="fa-solid fa-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'exclamation-triangle' : 'check-circle' }} text-3xl text-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'red' : 'green' }}-500 opacity-30"></i>
+                                <div class="text-right">
+                                    <span class="text-[10px] font-bold text-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'rose' : 'emerald' }}-600 uppercase tracking-wider bg-{{ $rentMain && $rentMain->remaining_balance > 0 ? 'rose' : 'emerald' }}-100 px-2 py-1 rounded-full">
+                                        {{ $rentMain && $rentMain->remaining_balance > 0 ? __('common.pending') : __('common.settled') }}
+                                    </span>
+                                </div>
                             </div>
+                            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{{ __('house_rent.remaining_balance') }}</h3>
+                            <p class="text-3xl font-black {{ $rentMain && $rentMain->remaining_balance > 0 ? 'text-rose-600' : 'text-emerald-600' }}">
+                                ৳{{ $rentMain ? number_format(abs((float) $rentMain->remaining_balance), 0) : '0' }}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Quick Actions -->
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">
-                        <i class="fa-solid fa-bolt mr-2"></i>
-                        {{ __('Quick Actions') ?? 'Quick Actions' }}
-                    </h3>
-                    <div class="flex flex-wrap gap-3">
-                        <a href="{{ route('reports.overview') }}" class="inline-flex items-center px-5 py-3 bg-white text-indigo-600 text-sm font-semibold rounded-lg hover:bg-gray-100 shadow-md transition-all">
-                            <i class="fa-solid fa-chart-pie mr-2"></i>
-                            {{ __('Monthly Report') ?? 'Monthly Report' }}
-                        </a>
-                        @can('meals.manage')
-                            <a href="{{ route('meals.bulkEntry') }}" class="inline-flex items-center px-5 py-3 bg-white text-purple-600 text-sm font-semibold rounded-lg hover:bg-gray-100 shadow-md transition-all">
-                                <i class="fa-solid fa-utensils mr-2"></i>
-                                {{ __('Add Meals') ?? 'Add Meals' }}
+            <div class="relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-[2rem] blur-xl opacity-30"></div>
+                <div class="relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden rounded-[2rem] shadow-2xl">
+                    <!-- Animated background elements -->
+                    <div class="absolute inset-0 overflow-hidden">
+                        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+                        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-fuchsia-500/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                    </div>
+                    
+                    <div class="relative p-8 md:p-10">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="relative">
+                                <div class="absolute -inset-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-xl blur opacity-60 animate-pulse"></div>
+                                <div class="relative w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                                    <i class="fa-solid fa-bolt text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-black text-white">
+                                    {{ __('common.quick_actions') }}
+                                </h3>
+                                <p class="text-purple-300 text-sm">{{ __('common.shortcuts') }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <a href="{{ route('reports.overview') }}" class="group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                                <div class="relative flex items-center gap-4 px-5 py-5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl group-hover:border-transparent group-hover:bg-transparent transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-chart-pie text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-bold block">{{ __('common.monthly_report') }}</span>
+                                        <span class="text-purple-300 text-xs group-hover:text-white/80">{{ __('common.view_reports') }}</span>
+                                    </div>
+                                </div>
                             </a>
-                        @endcan
-                        @can('bazars.manage')
-                            <a href="{{ route('bazars.create') }}" class="inline-flex items-center px-5 py-3 bg-white text-green-600 text-sm font-semibold rounded-lg hover:bg-gray-100 shadow-md transition-all">
-                                <i class="fa-solid fa-shopping-cart mr-2"></i>
-                                {{ __('Add Bazar') ?? 'Add Bazar' }}
+                            
+                            @can('meals.manage')
+                            <a href="{{ route('meals.bulkEntry') }}" class="group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                                <div class="relative flex items-center gap-4 px-5 py-5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl group-hover:border-transparent group-hover:bg-transparent transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-utensils text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-bold block">{{ __('common.add_meals') }}</span>
+                                        <span class="text-purple-300 text-xs group-hover:text-white/80">{{ __('common.daily_entry') }}</span>
+                                    </div>
+                                </div>
                             </a>
-                        @endcan
-                        @can('houserent.manage')
-                            <a href="{{ route('house-rent-mains.index') }}" class="inline-flex items-center px-5 py-3 bg-white text-orange-600 text-sm font-semibold rounded-lg hover:bg-gray-100 shadow-md transition-all">
-                                <i class="fa-solid fa-house mr-2"></i>
-                                {{ __('Manage Rent') ?? 'Manage Rent' }}
+                            @endcan
+                            
+                            @can('bazars.manage')
+                            <a href="{{ route('bazars.create') }}" class="group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                                <div class="relative flex items-center gap-4 px-5 py-5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl group-hover:border-transparent group-hover:bg-transparent transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-cart-shopping text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-bold block">{{ __('common.add_bazar') }}</span>
+                                        <span class="text-purple-300 text-xs group-hover:text-white/80">{{ __('common.new_expense') }}</span>
+                                    </div>
+                                </div>
                             </a>
-                        @endcan
+                            @endcan
+                            
+                            @can('houserent.manage')
+                            <a href="{{ route('house-rent-mains.index') }}" class="group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                                <div class="relative flex items-center gap-4 px-5 py-5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl group-hover:border-transparent group-hover:bg-transparent transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-house text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-bold block">{{ __('common.manage_rent') }}</span>
+                                        <span class="text-purple-300 text-xs group-hover:text-white/80">{{ __('common.house_rent') }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                            @endcan
+                        </div>
                     </div>
                 </div>
             </div>

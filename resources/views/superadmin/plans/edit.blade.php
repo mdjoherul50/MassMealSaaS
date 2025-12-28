@@ -37,7 +37,7 @@
                             <!-- Slug -->
                             <div>
                                 <label for="slug" class="block text-sm font-medium text-gray-700">
-                                    Slug <span class="text-red-500">*</span>
+                                    {{ __('common.slug') }} <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="slug" id="slug" value="{{ old('slug', $plan->slug) }}" required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -109,7 +109,7 @@
                             <!-- Sort Order -->
                             <div>
                                 <label for="sort_order" class="block text-sm font-medium text-gray-700">
-                                    Sort Order
+                                    {{ __('plan.sort_order') }}
                                 </label>
                                 <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', $plan->sort_order) }}" min="0"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -134,11 +134,11 @@
                         <!-- Features -->
                         <div class="mt-6">
                             <label for="features" class="block text-sm font-medium text-gray-700">
-                                {{ __('plan.features') }} (one per line)
+                                {{ __('plan.features') }} ({{ __('common.one_per_line') }})
                             </label>
-                            <textarea name="features_text" id="features_text" rows="5" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                            <textarea name="features_text" id="features_text" rows="5" placeholder="{{ __('common.feature_placeholder') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('features_text', is_array($plan->features) ? implode("\n", $plan->features) : '') }}</textarea>
-                            <p class="mt-1 text-sm text-gray-500">Enter each feature on a new line</p>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('common.enter_each_feature_on_new_line') }}</p>
                         </div>
 
                         <!-- Checkboxes -->

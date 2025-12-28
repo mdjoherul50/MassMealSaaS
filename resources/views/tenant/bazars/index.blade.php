@@ -32,7 +32,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($bazar->date)->format('d M, Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $bazar->buyer->name ?? __('common.na') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ number_format($bazar->total_amount, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($bazar->description, 30) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($bazar->description ?? __('common.na'), 30) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{ route('bazars.show', $bazar) }}" class="text-gray-600 hover:text-gray-900">{{ __('common.view') }}</a>
                                         @can('bazars.manage')
