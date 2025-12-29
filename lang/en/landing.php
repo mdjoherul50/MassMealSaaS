@@ -8,10 +8,18 @@ return [
     'hero_subtitle' => 'Stop worrying about calculations. MassMeal SaaS handles all your daily meals, bazar costs, and deposits, giving you a perfect monthly report.',
     'get_started_free' => 'Get Started For Free',
     'view_plans' => 'View Plans',
+    'learn_more' => 'Learn More',
+    'trusted_by' => 'Trusted Mess Management Solution',
+    'secure' => 'Fully Secure',
+    'active_mess' => 'Active Mess',
+    'happy_users' => 'Happy Users',
+    'support' => 'Support',
+    'uptime' => 'Uptime',
 
     // Features Section
     'features' => 'Features',
     'features_title' => 'Everything you need, all in one place',
+    'features_subtitle' => 'Powerful features to make your mess management easier and more efficient',
     'feature_member_title' => 'Member Management',
     'feature_member_desc' => 'Easily add, edit, and view all members, including their login accounts and statements.',
     'feature_meal_title' => 'Full Meal CRUD',
